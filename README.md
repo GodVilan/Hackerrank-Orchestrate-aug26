@@ -6,6 +6,7 @@
 [![Score](https://img.shields.io/badge/final-73.1%2F100-2f6f4e?style=flat-square)](#results)
 [![June 2026](https://img.shields.io/badge/June%202026-%2316%20of%201%2C773-6b7280?style=flat-square)](https://github.com/GodVilan/HackerRank-Orchestrate-June-2026)
 [![Python](https://img.shields.io/badge/python-3.13-3776ab?style=flat-square&logo=python&logoColor=white)](#)
+[![Built with Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-d97757?style=flat-square)](https://claude.com/claude-code)
 [![Claude Sonnet 4.6](https://img.shields.io/badge/model-claude--sonnet--4--6-d97757?style=flat-square)](#)
 [![Inputs](https://img.shields.io/badge/inputs-text%20%7C%20image%20%7C%20voice-8b5cf6?style=flat-square)](#multimodal)
 [![Rows](https://img.shields.io/badge/rows%20routed-110-475569?style=flat-square)](#operational-profile)
@@ -217,6 +218,20 @@ rule keys), `prompts.py`, `config.py`
 > threshold sits inside. See [ERRATA #4](ERRATA.md).
 
 ---
+
+---
+
+## How this was built
+
+Built with [Claude Code](https://claude.com/claude-code) over the 24-hour contest window.
+Claude Code was the development environment; `claude-sonnet-4-6` is what the shipped
+pipeline calls at runtime. Different things.
+
+The full build transcript is at [`transcript/log.txt`](transcript/log.txt) — every prompt
+sent, in order, including the reversals. It records the Layer 3 business-notify hoist being
+implemented, reviewed, and reverted for making `DIGEST_PROMO_OPTED_IN` structurally
+unreachable, which is the kind of decision that leaves no trace in a final diff. It was
+submitted as a graded component and scored **9.8 / 10**.
 
 ## Operational profile
 
