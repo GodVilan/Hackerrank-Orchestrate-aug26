@@ -1,0 +1,1194 @@
+{
+  "config": "a",
+  "config_description": "full precedence ladder (shipping configuration)",
+  "model": "claude-sonnet-4-6",
+  "prompt_version": 1,
+  "scored_rows": 30,
+  "routing_cache": {
+    "rows": 30,
+    "cache_hits": 0,
+    "model_calls": 30,
+    "hit_rate": 0.0
+  },
+  "tier1_field_accuracy": {
+    "n": 30,
+    "action_accuracy": 0.8333,
+    "message_type_accuracy": 0.7667,
+    "both_correct": 0.7,
+    "confusion_matrix": {
+      "notify": {
+        "notify": 6,
+        "digest": 3,
+        "mute": 0
+      },
+      "digest": {
+        "notify": 0,
+        "digest": 9,
+        "mute": 2
+      },
+      "mute": {
+        "notify": 0,
+        "digest": 0,
+        "mute": 10
+      }
+    },
+    "per_action": {
+      "notify": {
+        "support": 9,
+        "precision": 1.0,
+        "recall": 0.6667,
+        "f1": 0.8
+      },
+      "digest": {
+        "support": 11,
+        "precision": 0.75,
+        "recall": 0.8182,
+        "f1": 0.7826
+      },
+      "mute": {
+        "support": 10,
+        "precision": 0.8333,
+        "recall": 1.0,
+        "f1": 0.9091
+      }
+    },
+    "macro_f1_action": 0.8306,
+    "per_message_type": {
+      "urgent": {
+        "n": 4,
+        "action_ok": 4,
+        "type_ok": 4
+      },
+      "event": {
+        "n": 4,
+        "action_ok": 2,
+        "type_ok": 2
+      },
+      "business_update": {
+        "n": 3,
+        "action_ok": 1,
+        "type_ok": 2
+      },
+      "personal": {
+        "n": 4,
+        "action_ok": 4,
+        "type_ok": 4
+      },
+      "promotion": {
+        "n": 6,
+        "action_ok": 6,
+        "type_ok": 5
+      },
+      "greeting": {
+        "n": 2,
+        "action_ok": 2,
+        "type_ok": 1
+      },
+      "forward": {
+        "n": 1,
+        "action_ok": 1,
+        "type_ok": 1
+      },
+      "scam": {
+        "n": 4,
+        "action_ok": 4,
+        "type_ok": 4
+      },
+      "spam": {
+        "n": 1,
+        "action_ok": 1,
+        "type_ok": 0
+      },
+      "unknown": {
+        "n": 1,
+        "action_ok": 0,
+        "type_ok": 0
+      }
+    },
+    "misses": [
+      {
+        "message_id": "sample_msg_004",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "gold_type": "business_update",
+        "pred_type": "business_update",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "confidence": "0.84"
+      },
+      {
+        "message_id": "sample_msg_005",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "gold_type": "event",
+        "pred_type": "business_update",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "confidence": "0.78"
+      },
+      {
+        "message_id": "sample_msg_046",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "gold_type": "event",
+        "pred_type": "event",
+        "rule_key": "DIGEST_EVENT_FUTURE",
+        "confidence": "0.78"
+      },
+      {
+        "message_id": "sample_msg_048",
+        "gold_action": "digest",
+        "pred_action": "mute",
+        "gold_type": "business_update",
+        "pred_type": "promotion",
+        "rule_key": "MUTE_UNSOLICITED_BUSINESS",
+        "confidence": "0.81"
+      },
+      {
+        "message_id": "sample_msg_049",
+        "gold_action": "digest",
+        "pred_action": "mute",
+        "gold_type": "unknown",
+        "pred_type": "personal",
+        "rule_key": "MUTE_SCAM_FIRST_CONTACT",
+        "confidence": "0.81"
+      }
+    ],
+    "per_row": [
+      {
+        "message_id": "sample_msg_001",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_ADMIN_TIME_SENSITIVE",
+        "confidence": "0.91",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_002",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_SCHOOL_OPERATIONAL",
+        "confidence": "0.91",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_003",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_WORK_DEADLINE",
+        "confidence": "0.91",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_004",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "confidence": "0.84",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": false
+      },
+      {
+        "message_id": "sample_msg_005",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "confidence": "0.78",
+        "tier": 0,
+        "tier_signals": [
+          "disagreement_override"
+        ],
+        "correct": false
+      },
+      {
+        "message_id": "sample_msg_006",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_DIRECT_REQUEST",
+        "confidence": "0.91",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_007",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_PROMO_OPTED_IN",
+        "confidence": "0.84",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_008",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_EVENT_FUTURE",
+        "confidence": "0.82",
+        "tier": 2,
+        "tier_signals": [
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_009",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_GREETING",
+        "confidence": "0.82",
+        "tier": 2,
+        "tier_signals": [
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_010",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "confidence": "0.84",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_011",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "confidence": "0.84",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_012",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "confidence": "0.82",
+        "tier": 2,
+        "tier_signals": [
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_013",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_MUTED_GROUP",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_014",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_FORWARD_PATTERN",
+        "confidence": "0.81",
+        "tier": 0,
+        "tier_signals": [
+          "disagreement_override"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_015",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_OPTED_OUT_MARKETING",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_019",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_OTP",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_020",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_OTP",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_041",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "confidence": "0.82",
+        "tier": 2,
+        "tier_signals": [
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_042",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_CLOSE_CONTACT_URGENT",
+        "confidence": "0.87",
+        "tier": 1,
+        "tier_signals": [
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_043",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_FIRST_CONTACT",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_044",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_TRUSTED_NON_URGENT",
+        "confidence": "0.84",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_045",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_MUTED_GROUP",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_046",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_EVENT_FUTURE",
+        "confidence": "0.78",
+        "tier": 0,
+        "tier_signals": [
+          "disagreement_override"
+        ],
+        "correct": false
+      },
+      {
+        "message_id": "sample_msg_047",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_UNSOLICITED_BUSINESS",
+        "confidence": "0.81",
+        "tier": 0,
+        "tier_signals": [
+          "disagreement_override"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_048",
+        "gold_action": "digest",
+        "pred_action": "mute",
+        "rule_key": "MUTE_UNSOLICITED_BUSINESS",
+        "confidence": "0.81",
+        "tier": 0,
+        "tier_signals": [
+          "disagreement_override"
+        ],
+        "correct": false
+      },
+      {
+        "message_id": "sample_msg_049",
+        "gold_action": "digest",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_FIRST_CONTACT",
+        "confidence": "0.81",
+        "tier": 0,
+        "tier_signals": [
+          "disagreement_override"
+        ],
+        "correct": false
+      },
+      {
+        "message_id": "sample_msg_050",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "confidence": "0.84",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_051",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_CLOSE_CONTACT_URGENT",
+        "confidence": "0.91",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_052",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_OTP",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "deterministic_support",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      },
+      {
+        "message_id": "sample_msg_053",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_INJECTION_ATTEMPT",
+        "confidence": "0.87",
+        "tier": 3,
+        "tier_signals": [
+          "counterparty_history",
+          "evidence_selected",
+          "model_agrees"
+        ],
+        "correct": true
+      }
+    ]
+  },
+  "tier2_evidence_grounding": {
+    "emitted_ids": 28,
+    "ids_in_pool": 28,
+    "in_pool_fraction": 1.0,
+    "pool_violations": [],
+    "tp": 16,
+    "fp": 12,
+    "fn": 15,
+    "precision": 0.5714,
+    "recall": 0.5161,
+    "f1": 0.5424,
+    "exact_set_match": 0.4667,
+    "gold_none_rows": [
+      "sample_msg_049",
+      "sample_msg_052"
+    ],
+    "gold_none_agreement": 0.5,
+    "pred_none_rows": [
+      "sample_msg_042",
+      "sample_msg_049"
+    ]
+  },
+  "tier2b_reason_quality": {
+    "rule_key_stability": {
+      "digest/business_update": {
+        "n": 2,
+        "rule_keys": {
+          "DIGEST_BIZ_LEGIT": 1,
+          "MUTE_UNSOLICITED_BUSINESS": 1
+        },
+        "stable": false
+      },
+      "digest/event": {
+        "n": 1,
+        "rule_keys": {
+          "DIGEST_EVENT_FUTURE": 1
+        },
+        "stable": true
+      },
+      "digest/greeting": {
+        "n": 1,
+        "rule_keys": {
+          "DIGEST_GREETING": 1
+        },
+        "stable": true
+      },
+      "digest/personal": {
+        "n": 3,
+        "rule_keys": {
+          "DIGEST_CASUAL": 3
+        },
+        "stable": true
+      },
+      "digest/promotion": {
+        "n": 3,
+        "rule_keys": {
+          "DIGEST_PROMO_OPTED_IN": 1,
+          "DIGEST_CASUAL": 1,
+          "DIGEST_TRUSTED_NON_URGENT": 1
+        },
+        "stable": false
+      },
+      "digest/unknown": {
+        "n": 1,
+        "rule_keys": {
+          "MUTE_SCAM_FIRST_CONTACT": 1
+        },
+        "stable": true
+      },
+      "mute/forward": {
+        "n": 1,
+        "rule_keys": {
+          "MUTE_FORWARD_PATTERN": 1
+        },
+        "stable": true
+      },
+      "mute/greeting": {
+        "n": 1,
+        "rule_keys": {
+          "MUTE_MUTED_GROUP": 1
+        },
+        "stable": true
+      },
+      "mute/promotion": {
+        "n": 3,
+        "rule_keys": {
+          "MUTE_OPTED_OUT_MARKETING": 1,
+          "MUTE_MUTED_GROUP": 1,
+          "MUTE_UNSOLICITED_BUSINESS": 1
+        },
+        "stable": false
+      },
+      "mute/scam": {
+        "n": 4,
+        "rule_keys": {
+          "MUTE_SCAM_OTP": 3,
+          "MUTE_INJECTION_ATTEMPT": 1
+        },
+        "stable": false
+      },
+      "mute/spam": {
+        "n": 1,
+        "rule_keys": {
+          "MUTE_SCAM_FIRST_CONTACT": 1
+        },
+        "stable": true
+      },
+      "notify/business_update": {
+        "n": 1,
+        "rule_keys": {
+          "DIGEST_BIZ_LEGIT": 1
+        },
+        "stable": true
+      },
+      "notify/event": {
+        "n": 3,
+        "rule_keys": {
+          "NOTIFY_SCHOOL_OPERATIONAL": 1,
+          "DIGEST_BIZ_LEGIT": 1,
+          "DIGEST_EVENT_FUTURE": 1
+        },
+        "stable": false
+      },
+      "notify/personal": {
+        "n": 1,
+        "rule_keys": {
+          "NOTIFY_DIRECT_REQUEST": 1
+        },
+        "stable": true
+      },
+      "notify/urgent": {
+        "n": 4,
+        "rule_keys": {
+          "NOTIFY_ADMIN_TIME_SENSITIVE": 1,
+          "NOTIFY_WORK_DEADLINE": 1,
+          "NOTIFY_CLOSE_CONTACT_URGENT": 2
+        },
+        "stable": false
+      }
+    },
+    "groups_with_multiple_rows": 7,
+    "unstable_groups": [
+      "digest/business_update",
+      "digest/promotion",
+      "mute/promotion",
+      "mute/scam",
+      "notify/event",
+      "notify/urgent"
+    ],
+    "judge_counts": {
+      "same_rule": 13,
+      "compatible": 13,
+      "contradictory": 4
+    },
+    "judge_verdicts": [
+      {
+        "message_id": "sample_msg_001",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_ADMIN_TIME_SENSITIVE",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same two reasons: the sender is a trusted group admin and the message is time-sensitive.",
+        "gold_reason": "A trusted group admin sent a time-sensitive update that should interrupt the user.",
+        "pred_reason": "A trusted group admin sent a time-sensitive update that should interrupt the user."
+      },
+      {
+        "message_id": "sample_msg_002",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_SCHOOL_OPERATIONAL",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same reason: a school admin sent a same-day operational update that the user is likely to need immediately.",
+        "gold_reason": "A school admin sent a same-day operational update that the user is likely to need immediately.",
+        "pred_reason": "A school admin sent a same-day operational update that the user is likely to need immediately."
+      },
+      {
+        "message_id": "sample_msg_003",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_WORK_DEADLINE",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing a work context with a direct deadline or meeting dependency as the routing reason.",
+        "gold_reason": "The message is from a work context and contains a direct deadline or meeting dependency.",
+        "pred_reason": "The message is from a work context and contains a direct deadline or meeting dependency."
+      },
+      {
+        "message_id": "sample_msg_004",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "verdict": "compatible",
+        "justification": "Both agree the sender is a verified business sending a legitimate message, but the reference emphasizes relevance to the user's order history while the system output focuses on the message's lack of urgency.",
+        "gold_reason": "A verified business is sending an update that matches the user's recent order history.",
+        "pred_reason": "The verified business message is legitimate but does not require immediate attention."
+      },
+      {
+        "message_id": "sample_msg_005",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "verdict": "compatible",
+        "justification": "Both agree the sender is a verified business sending a legitimate message, but the reference highlights the booking history match as the routing reason while the system output focuses on the message's lack of urgency.",
+        "gold_reason": "A verified business is sending a reminder that matches the user's recent booking history.",
+        "pred_reason": "The verified business message is legitimate but does not require immediate attention."
+      },
+      {
+        "message_id": "sample_msg_006",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_DIRECT_REQUEST",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, stating that the sender directly asks the user for a response or action.",
+        "gold_reason": "The sender directly asks this user for a response or action.",
+        "pred_reason": "The sender directly asks this user for a response or action."
+      },
+      {
+        "message_id": "sample_msg_007",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_PROMO_OPTED_IN",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing that the promotional message matches a topic or business the user has opted into.",
+        "gold_reason": "The message is promotional but matches a topic or business the user has opted into.",
+        "pred_reason": "The message is promotional but matches a topic or business the user has opted into."
+      },
+      {
+        "message_id": "sample_msg_008",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_EVENT_FUTURE",
+        "verdict": "compatible",
+        "justification": "Both explanations agree the message should not interrupt the user, but the reference cites lack of urgency in general while the system output specifically attributes non-urgency to the event being far in the future.",
+        "gold_reason": "The message is useful group information, but it is not urgent enough to interrupt the user.",
+        "pred_reason": "The message describes an event far enough ahead that it does not need to interrupt the user now."
+      },
+      {
+        "message_id": "sample_msg_009",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_GREETING",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same reason: the message is a harmless greeting that can be read later.",
+        "gold_reason": "The message is a harmless greeting that can be read later.",
+        "pred_reason": "The message is a harmless greeting that can be read later."
+      },
+      {
+        "message_id": "sample_msg_010",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the message as safe casual chat with no urgent action required.",
+        "gold_reason": "The message is safe casual chat with no urgent action required.",
+        "pred_reason": "The message is safe casual chat with no urgent action required."
+      },
+      {
+        "message_id": "sample_msg_011",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_BIZ_LEGIT",
+        "verdict": "same_rule",
+        "justification": "Both explanations cite the same two factors: the sender is a verified business and the message is legitimate but non-urgent.",
+        "gold_reason": "A verified business is sending a legitimate but non-urgent update.",
+        "pred_reason": "The verified business message is legitimate but does not require immediate attention."
+      },
+      {
+        "message_id": "sample_msg_012",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "verdict": "compatible",
+        "justification": "Both explanations agree the message requires no immediate/urgent action, but the reference focuses on relevance of an offer while the system output characterizes it as casual chat \u2014 different reasons pointing to the same low-priority routing outcome.",
+        "gold_reason": "The offer is potentially relevant, but it does not need immediate attention.",
+        "pred_reason": "The message is safe casual chat with no urgent action required."
+      },
+      {
+        "message_id": "sample_msg_013",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_MUTED_GROUP",
+        "verdict": "compatible",
+        "justification": "Both explanations justify low-priority routing, but via different reasons: the reference cites the sender's ignored forwarding/greeting habit, while the system output cites a muted group and lack of direct address.",
+        "gold_reason": "The sender has a pattern of repeated forwards or greetings that the user usually ignores.",
+        "pred_reason": "The user has muted this group and the message does not address them directly."
+      },
+      {
+        "message_id": "sample_msg_014",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_FORWARD_PATTERN",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same rule about the sender's pattern of repeated forwards or greetings that the user usually ignores.",
+        "gold_reason": "The sender has a pattern of repeated forwards or greetings that the user usually ignores.",
+        "pred_reason": "The sender has a pattern of repeated forwards or greetings that the user usually ignores."
+      },
+      {
+        "message_id": "sample_msg_015",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_OPTED_OUT_MARKETING",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same reason: the user has opted out of or repeatedly dismissed similar marketing messages.",
+        "gold_reason": "The user has opted out of or repeatedly dismissed similar marketing messages.",
+        "pred_reason": "The user has opted out of or repeatedly dismissed similar marketing messages."
+      },
+      {
+        "message_id": "sample_msg_019",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_OTP",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same reason: an urgent OTP or account verification request through a suspicious flow.",
+        "gold_reason": "The message asks for urgent OTP or account verification through a suspicious flow.",
+        "pred_reason": "The message asks for urgent OTP or account verification through a suspicious flow."
+      },
+      {
+        "message_id": "sample_msg_020",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_OTP",
+        "verdict": "compatible",
+        "justification": "Both identify a deceptive/suspicious message designed to pressure the user into acting, but the reference focuses on fake support language and blocking threats, while the system output focuses on OTP/account verification requests \u2014 different but complementary phishing indicators pointing to the same routing outcome.",
+        "gold_reason": "The message uses fake support language and account-blocking pressure to push the user into action.",
+        "pred_reason": "The message asks for urgent OTP or account verification through a suspicious flow."
+      },
+      {
+        "message_id": "sample_msg_041",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "verdict": "compatible",
+        "justification": "Both explanations agree there is no urgent action required and point to the same routing outcome, but the reference focuses on sender trust while the system output focuses on the casual/safe nature of the message content.",
+        "gold_reason": "The sender is trusted, but the message has no urgent action or safety relevance.",
+        "pred_reason": "The message is safe casual chat with no urgent action required."
+      },
+      {
+        "message_id": "sample_msg_042",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_CLOSE_CONTACT_URGENT",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same reasons: a close contact, a short urgent request, and the need to interrupt the user.",
+        "gold_reason": "A close contact sent a short urgent request that should interrupt the user.",
+        "pred_reason": "A close contact sent a short urgent request that should interrupt the user."
+      },
+      {
+        "message_id": "sample_msg_043",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_FIRST_CONTACT",
+        "verdict": "contradictory",
+        "justification": "The reference cites the user's history of opting out of marketing messages, while the system output cites the message being a first-contact request for sensitive verification or payment \u2014 these are entirely different rules pointing to different underlying reasons for routing.",
+        "gold_reason": "The user has opted out of or repeatedly dismissed similar marketing messages.",
+        "pred_reason": "This is the first message from the sender and it asks for sensitive verification or payment."
+      },
+      {
+        "message_id": "sample_msg_044",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_TRUSTED_NON_URGENT",
+        "verdict": "compatible",
+        "justification": "Both explanations point toward a low-priority routing outcome, but the reference cites interest-matching as the key factor while the system output cites sender trust and lack of urgency/safety relevance as the reasons.",
+        "gold_reason": "The message matches the user's known interests but is still low priority.",
+        "pred_reason": "The sender is trusted, but the message has no urgent action or safety relevance."
+      },
+      {
+        "message_id": "sample_msg_045",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_MUTED_GROUP",
+        "verdict": "compatible",
+        "justification": "Both explanations support the same low-priority/ignore routing outcome, but via different reasons: the reference cites the user's past behavior of dismissing similar messages, while the system output cites an active mute setting and lack of direct addressing.",
+        "gold_reason": "Similar historical messages were ignored, dismissed, or muted by this user.",
+        "pred_reason": "The user has muted this group and the message does not address them directly."
+      },
+      {
+        "message_id": "sample_msg_046",
+        "gold_action": "notify",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_EVENT_FUTURE",
+        "verdict": "contradictory",
+        "justification": "The reference says the message is urgent and needed immediately (same-day), while the system output says the message is not time-sensitive and can wait, implying opposite routing decisions.",
+        "gold_reason": "A school admin sent a same-day operational update that the user is likely to need immediately.",
+        "pred_reason": "The message describes an event far enough ahead that it does not need to interrupt the user now."
+      },
+      {
+        "message_id": "sample_msg_047",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_UNSOLICITED_BUSINESS",
+        "verdict": "compatible",
+        "justification": "Both explanations support suppressing a promotional message, but the reference cites the user's opt-out/dismissal history while the system output cites the lack of an existing business relationship \u2014 different but non-contradictory reasons pointing the same way.",
+        "gold_reason": "The user has opted out of or repeatedly dismissed similar marketing messages.",
+        "pred_reason": "The message is promotional and the user has no existing relationship with this business."
+      },
+      {
+        "message_id": "sample_msg_048",
+        "gold_action": "digest",
+        "pred_action": "mute",
+        "rule_key": "MUTE_UNSOLICITED_BUSINESS",
+        "verdict": "contradictory",
+        "justification": "The reference treats the sender as a verified, legitimate business implying a recognized relationship, while the system output says the user has no existing relationship with the business, pointing to different trust assessments and potentially different routing outcomes.",
+        "gold_reason": "The verified business message is legitimate but does not require immediate attention.",
+        "pred_reason": "The message is promotional and the user has no existing relationship with this business."
+      },
+      {
+        "message_id": "sample_msg_049",
+        "gold_action": "digest",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_FIRST_CONTACT",
+        "verdict": "contradictory",
+        "justification": "The reference says the message lacks payment pressure or sensitive requests, while the system output says it asks for sensitive verification or payment \u2014 these two characterizations of the message's content directly contradict each other.",
+        "gold_reason": "The sender is unfamiliar, but the message does not show urgency, payment pressure, or safety risk.",
+        "pred_reason": "This is the first message from the sender and it asks for sensitive verification or payment."
+      },
+      {
+        "message_id": "sample_msg_050",
+        "gold_action": "digest",
+        "pred_action": "digest",
+        "rule_key": "DIGEST_CASUAL",
+        "verdict": "compatible",
+        "justification": "Both explanations agree there is no urgent action required and point to the same routing outcome, but the reference focuses on sender trust while the system output focuses on the casual/safe nature of the message content.",
+        "gold_reason": "The sender is trusted, but the message has no urgent action or safety relevance.",
+        "pred_reason": "The message is safe casual chat with no urgent action required."
+      },
+      {
+        "message_id": "sample_msg_051",
+        "gold_action": "notify",
+        "pred_action": "notify",
+        "rule_key": "NOTIFY_CLOSE_CONTACT_URGENT",
+        "verdict": "compatible",
+        "justification": "Both explanations justify an interrupting/urgent routing, but the reference cites a work context with a deadline/meeting dependency while the system output cites the sender being a close contact with a short urgent request \u2014 different but mutually compatible reasons pointing the same way.",
+        "gold_reason": "The message is from a work context and contains a direct deadline or meeting dependency.",
+        "pred_reason": "A close contact sent a short urgent request that should interrupt the user."
+      },
+      {
+        "message_id": "sample_msg_052",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_SCAM_OTP",
+        "verdict": "compatible",
+        "justification": "Both explanations point to a sensitive/verification request being the routing reason, but the reference highlights the sender being new while the system output emphasizes urgency and a suspicious flow.",
+        "gold_reason": "This is the first message from the sender and it asks for sensitive verification or payment.",
+        "pred_reason": "The message asks for urgent OTP or account verification through a suspicious flow."
+      },
+      {
+        "message_id": "sample_msg_053",
+        "gold_action": "mute",
+        "pred_action": "mute",
+        "rule_key": "MUTE_INJECTION_ATTEMPT",
+        "verdict": "same_rule",
+        "justification": "Both explanations are identical, citing the same rule that routing should be based on actual content and risk, not on instructions within the message.",
+        "gold_reason": "The message tries to instruct the router, but the routing decision should be based on the actual content and risk.",
+        "pred_reason": "The message tries to instruct the router, but the routing decision should be based on the actual content and risk."
+      }
+    ]
+  },
+  "tier3_consistency": {
+    "clusters": {
+      "img_003": {
+        "rows": [
+          {
+            "message_id": "msg_027",
+            "recipient": "u_012",
+            "action": "digest",
+            "gold_action": "",
+            "source": "output.csv"
+          },
+          {
+            "message_id": "msg_028",
+            "recipient": "u_007",
+            "action": "mute",
+            "gold_action": "",
+            "source": "output.csv"
+          }
+        ],
+        "differing_features": [
+          "user_open_rate_30d",
+          "user_dismiss_rate_30d",
+          "user_report_count_30d",
+          "trailing_daily_load",
+          "allows_promotions",
+          "opted_out"
+        ],
+        "distinct_actions": [
+          "digest",
+          "mute"
+        ]
+      },
+      "img_008": {
+        "rows": [
+          {
+            "message_id": "msg_005",
+            "recipient": "u_032",
+            "action": "notify",
+            "gold_action": "",
+            "source": "output.csv"
+          },
+          {
+            "message_id": "msg_030",
+            "recipient": "u_033",
+            "action": "mute",
+            "gold_action": "",
+            "source": "output.csv"
+          },
+          {
+            "message_id": "msg_029",
+            "recipient": "u_032",
+            "action": "digest",
+            "gold_action": "",
+            "source": "output.csv"
+          },
+          {
+            "message_id": "sample_msg_044",
+            "recipient": "u_032",
+            "action": "digest",
+            "gold_action": "digest",
+            "source": "labeled run"
+          },
+          {
+            "message_id": "sample_msg_045",
+            "recipient": "u_033",
+            "action": "mute",
+            "gold_action": "mute",
+            "source": "labeled run"
+          }
+        ],
+        "differing_features": [
+          "user_open_rate_30d",
+          "user_dismiss_rate_30d",
+          "user_report_count_30d",
+          "trailing_daily_load",
+          "group_muted_by_user",
+          "n_prior",
+          "open_rate",
+          "dismiss_rate",
+          "sender_history_strength",
+          "forwarded_count"
+        ],
+        "distinct_actions": [
+          "digest",
+          "mute",
+          "notify"
+        ]
+      },
+      "img_010": {
+        "rows": [
+          {
+            "message_id": "msg_065",
+            "recipient": "u_008",
+            "action": "digest",
+            "gold_action": "",
+            "source": "output.csv"
+          },
+          {
+            "message_id": "msg_066",
+            "recipient": "u_007",
+            "action": "mute",
+            "gold_action": "",
+            "source": "output.csv"
+          },
+          {
+            "message_id": "sample_msg_047",
+            "recipient": "u_007",
+            "action": "mute",
+            "gold_action": "mute",
+            "source": "labeled run"
+          }
+        ],
+        "differing_features": [
+          "user_open_rate_30d",
+          "user_dismiss_rate_30d",
+          "user_report_count_30d",
+          "trailing_daily_load",
+          "has_relationship",
+          "allows_promotions",
+          "opted_out",
+          "forwarded_count"
+        ],
+        "distinct_actions": [
+          "digest",
+          "mute"
+        ]
+      }
+    },
+    "flags": []
+  },
+  "calibration": {
+    "buckets": {
+      "0.78": {
+        "n": 2,
+        "correct": 0,
+        "accuracy": 0.0
+      },
+      "0.81": {
+        "n": 4,
+        "correct": 2,
+        "accuracy": 0.5
+      },
+      "0.82": {
+        "n": 4,
+        "correct": 4,
+        "accuracy": 1.0
+      },
+      "0.84": {
+        "n": 6,
+        "correct": 5,
+        "accuracy": 0.8333
+      },
+      "0.87": {
+        "n": 9,
+        "correct": 9,
+        "accuracy": 1.0
+      },
+      "0.91": {
+        "n": 5,
+        "correct": 5,
+        "accuracy": 1.0
+      }
+    },
+    "monotonic": false,
+    "band_separation": 0.3125
+  },
+  "degraded_during_scoring": 0,
+  "elapsed_s": 210.93
+}

@@ -1,0 +1,50 @@
+{
+  "experiment": "router cache cleared; all 110 rows re-routed against byte-identical prompts at temperature 0.0",
+  "readings_compared": 140,
+  "readings_changed_any_field": 43,
+  "readings_changed_any_field_pct": 30.7,
+  "readings_changed_structured_field": 21,
+  "readings_changed_structured_field_pct": 15.0,
+  "structured_fields": [
+    "message_type",
+    "content_risk",
+    "urgency",
+    "promotional",
+    "is_router_injection_attempt",
+    "asks_user_for_action",
+    "evidence_message_ids",
+    "proposed_action"
+  ],
+  "per_field_changes": {
+    "media_summary": 26,
+    "evidence_message_ids": 8,
+    "urgency": 6,
+    "content_risk": 6,
+    "message_type": 3,
+    "asks_user_for_action": 1,
+    "promotional": 1,
+    "proposed_action": 1
+  },
+  "output_rows_compared": 110,
+  "output_rows_changed": 8,
+  "output_rows_changed_ids": [
+    "msg_012",
+    "msg_031",
+    "msg_041",
+    "msg_057",
+    "msg_060",
+    "msg_089",
+    "msg_104",
+    "msg_106"
+  ],
+  "action_changes": 1,
+  "action_change_detail": [
+    {
+      "message_id": "msg_089",
+      "before": "mute",
+      "after": "notify"
+    }
+  ],
+  "config_a_action_accuracy_before": 0.8,
+  "config_a_action_accuracy_after": 0.8333
+}

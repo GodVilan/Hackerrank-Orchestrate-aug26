@@ -1,3 +1,11 @@
+# replace the bare `output.csv` and `log.txt` lines with:
+/output.csv
+/code/output.csv
+/code/cache/
+/code/.cache/
+!results/output.csv
+!transcript/log.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

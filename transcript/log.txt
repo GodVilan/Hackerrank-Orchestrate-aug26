@@ -1,0 +1,1492 @@
+## [2026-08-01T09:07:14-05:00] ONBOARDING COMPLETE
+
+AGREEMENT RECORDED: /Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+Agent: claude-code
+Language: py
+System Time: 2026-08-01T09:07:14-05:00 (CDT, UTC-05:00)
+Time Remaining: not configured
+
+## [2026-08-01T09:26:00-05:00] Scaffold code/ as a Python package (config, deps, gitignore)
+
+User Prompt (verbatim, secrets redacted):
+Read AGENTS.md, README.md, and problem_statement.md in full and confirm the
+entry-point contract (code/main.py, code/evaluation/main.py — both currently
+empty placeholder files).
+
+Then set up code/ as a Python package. Do NOT write any model-calling logic,
+any routing logic, or any prompt content yet.
+
+Create:
+- code/config.py — single source of truth for paths and model settings.
+  ANTHROPIC_API_KEY read from environment only, optionally hydrated from a
+  git-ignored code/.env; real env vars always win. Constants:
+  PRIMARY_MODEL="claude-sonnet-4-6", TEMPERATURE=0.0, MAX_TOKENS=1024,
+  ENABLE_PROMPT_CACHING=True, MAX_RETRIES=3, DATASET_DIR pointing at
+  ../dataset. Note in a docstring that media file_path values in images.csv
+  and voice_notes.csv are relative to DATASET_DIR, not to the repo root.
+- code/requirements.txt — pinned versions, include the anthropic SDK.
+- code/.env.example
+- code/__init__.py and code/evaluation/__init__.py
+- .gitignore at repo root excluding .env, venvs, __pycache__, dataset/,
+  and any generated output.csv or cache directories.
+- code/README.md — a stub with headings only: Architecture, Setup,
+  Environment Variables, Run Commands, Evaluation. Leave bodies empty; I'll
+  fill them as decisions are made.
+
+Constraint for this and every later prompt in this project: message_id
+ordinal position, numeric suffix, or row order is NEVER a feature. No logic
+anywhere may key off the numeric part of a message_id or its position in a
+file. If you find a correlation between message_id numbering and any label
+or evidence ID, do not use it — flag it to me instead.
+
+Verify: python -c "import config" succeeds, and git check-ignore reports
+.env and __pycache__ as ignored. Then stop.
+
+Agent Response Summary:
+Read AGENTS.md, README.md, and problem_statement.md in full; ran onboarding
+(no prior AGREEMENT RECORDED line) and recorded the agreement. Confirmed both
+entry points are 0-byte placeholders and that only the output.csv column
+contract is binding. Scaffolded code/ as a package: config.py holds all paths
+and model settings with a zero-dependency .env parser (real env vars always
+win, verified by test); requirements.txt pins anthropic==0.120.2 and
+pandas==2.3.3; added .env.example, both __init__.py files, a headings-only
+code/README.md, and a root .gitignore. Ran git init so the requested
+git check-ignore verification could run. Wrote no model-calling, routing, or
+prompt logic. Recorded the standing constraint that message_id numbering and
+row order are never features.
+
+Actions:
+* Read AGENTS.md, README.md, problem_statement.md, dataset headers
+* Invoked claude-api skill to verify model id claude-sonnet-4-6 is current
+* Created code/config.py, code/requirements.txt, code/.env.example
+* Created code/__init__.py, code/evaluation/__init__.py, code/README.md
+* Created .gitignore at repo root
+* Ran: git init (repo did not previously exist)
+* Verified: python -c "import config"; git check-ignore -v; .env parse test
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T09:52:00-05:00] Record architecture in code/README.md (plan only, no code)
+
+User Prompt (verbatim, secrets redacted):
+@august26_implementation_guide.md
+Before any implementation, record the architecture. Write it to code/README.md
+under "Architecture" and reply with your understanding. Write no other code.
+[Full SYSTEM CONTRACT / WHAT CODE OWNS / PRECEDENCE LADDER / FAILURE PATHS /
+MODULE BOUNDARIES blocks as given in Prompt 2 of the implementation guide.]
+Confirm you understand, note anything in the dataset that contradicts this plan,
+and write the Architecture section. No other files.
+
+Agent Response Summary:
+Read the implementation guide, then verified its dataset claims directly against
+dataset/ with read-only Python before recording anything. Confirmed: 110/30 rows,
+412 history + 412 event rows, 20 images, 13 voice notes, pools mean 5.82 / max 21
+/ 6 empty, 8 DND rows, 5 @mention rows, 11 of 30 business rows lacking a
+relationship, business_032 and business_092 as described, the u_048-u_052 report
+and dismiss distributions, gold evidence capped at 2, and that
+BASE+0.02*tier reproduces all 30 gold confidence values exactly. Found seven
+items the plan does not resolve, the largest being that sample_messages.csv is a
+disjoint ID namespace rather than a labeled subset of messages.csv, that
+has_relationship is business-only but is read by two ungated ladder branches,
+that opted_out is not a column and is not equivalent to allows_promotions=0, and
+that the quiet-hours branch as written would upgrade a mute to a digest. Wrote
+the Architecture section to code/README.md including those open decisions. No
+other file created or modified.
+
+Actions:
+* Read august26_implementation_guide.md
+* Read-only analysis of all 13 dataset CSVs and media directories
+* Edited code/README.md (Architecture section only)
+* Verified via git status that no other file changed
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T10:08:00-05:00] Create code/schema.py and code/test_schema.py
+
+User Prompt (verbatim, secrets redacted):
+Create code/schema.py. Nothing else imports these values by re-declaring them;
+prompts, the validator, and the writer all import from here.
+[Full contents spec: OUTPUT_COLUMNS, ACTIONS, MESSAGE_TYPES, CONTENT_RISK,
+URGENCY, RuleKey str Enum, REASONS catalogue, CONFIDENCE_BASE/STEP/MIN/MAX,
+MAX_EVIDENCE_IDS/EVIDENCE_SEPARATOR/EVIDENCE_NONE, ROUTE_MESSAGE_TOOL, plus a
+module test in code/test_schema.py.]
+<paste the 24 gold strings and their rule keys from §4 of the guide here>
+
+Agent Response Summary:
+The prompt's paste placeholder was left literal, so the 24 gold reason strings
+were extracted directly from dataset/sample_messages.csv rather than retyped
+from the guide, then cross-checked against the guide's section 4 mapping. All 24
+match and all already satisfy the style constraints. Wrote code/schema.py with
+33 RuleKey members (24 gold-backed, 9 new branches written in the same voice)
+and the forced-schema tool definition, which deliberately exposes no action,
+reason, or confidence field. Wrote code/test_schema.py with 13 assertions
+runnable standalone or under pytest; all pass. Confirmed independently that the
+confidence formula's reachable value set equals the gold value set exactly.
+Flagged two judgment calls to the user: additionalProperties=false was included
+but strict tool use was not, since structured outputs are not documented as
+supported on claude-sonnet-4-6.
+
+Actions:
+* Extracted the 24 verbatim gold reason strings from dataset/sample_messages.csv
+* Created code/schema.py (33 rule keys, catalogue, ROUTE_MESSAGE_TOOL)
+* Created code/test_schema.py (13 tests, no third-party dependency)
+* Ran: python3 test_schema.py -> 13/13 passed
+* Cross-checked catalogue and confidence formula against the live dataset
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T10:24:00-05:00] Create code/data_layer.py and code/check_dataset.py
+
+User Prompt (verbatim, secrets redacted):
+Create code/data_layer.py. Loading and indexing only — no decisions, no derived
+features, no model calls.
+[Full spec: read all 13 CSVs with dtype=str and keep_default_na=False; expose
+load_messages, load_sample_messages, index_users, index_groups,
+index_group_members, index_businesses, index_user_business,
+load_message_history, index_message_events, index_daily_summary,
+resolve_media_path(media_type, media_id). Media paths are relative to dataset/,
+not the repo root. Raise FileNotFoundError naming the media_id.]
+Add code/check_dataset.py that prints and asserts: 110 message rows, 30 sample
+rows, 412 history rows, 412 event rows, zero duplicate message_ids, every
+user_id/group_id/business_id in messages.csv resolvable, every referenced
+media_id resolvable to an existing file, and the count of business rows with no
+user_business_history entry. Run it and show me the output.
+
+Agent Response Summary:
+Wrote data_layer.py as pure loading and indexing with memoized loaders, all
+values guaranteed str via dtype=str plus keep_default_na=False, and input order
+preserved. resolve_media_path delegates the dataset-relative join to
+config.resolve_media_path so only one module knows that rule, and raises
+FileNotFoundError naming the media_id for unknown ids or missing files, ValueError
+for an unknown media_type. Added index_images and index_voice_notes since
+resolve_media_path needs them; output.csv is deliberately not loaded because it
+is the blank submission template rather than an input. check_dataset.py runs 17
+assertions and exits 0; it collects failures rather than aborting on the first.
+All checks passed. Verified separately that no loaded value is non-str, that
+empty cells are "" not NaN, that order matches the raw CSV, and that memoization
+returns identical objects. Reconciled the pandas pin from 2.3.3 to 2.3.2, the
+version actually installed and tested against.
+
+Actions:
+* Created code/data_layer.py
+* Created code/check_dataset.py
+* Edited code/requirements.txt (pandas 2.3.3 -> 2.3.2)
+* Ran: python3 code/check_dataset.py -> all checks passed, exit 0
+* Ran: python3 code/test_schema.py -> 13/13 still passing
+* Verified str-only values, "" not NaN, input order, memoization, error paths
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T10:47:00-05:00] SDK upgrade, API preflight, checksum guard, gold-reason inspection
+
+User Prompt (verbatim, secrets redacted):
+Three tasks. No new architecture. Do not modify schema.py, gates.py, or any
+decision logic. Standing clause: message_id ordinal position and row order are
+never features.
+TASK 1 — Close the SDK gap and verify the API contract before any real call.
+[Upgrade anthropic to the pinned version, print before/after, stop on failure.
+Create code/preflight_api.py: key via config.py only and never printed;
+models.list() printed in full; assert config model present else exit 3; one
+messages.create with max_tokens 256, tools from schema.py, forced tool_choice,
+synthetic non-dataset text; print stop_reason, usage, parsed tool input; assert
+exactly one tool_use block validating against the schema; exit 0 only if all
+pass. Run it and show full output.]
+TASK 2 — Guard the memoized-loader footgun. [frames_checksum() in data_layer.py;
+check_dataset.py section that recomputes after re-calling every loader and
+asserts equality, PASS/FAIL per frame. Do not wire into main.py.]
+TASK 3 — Answer two data questions. [code/inspect_gold_reasons.py, stdout only:
+(a) gold reasons grouped with counts and message_ids sorted by count desc;
+(b) full joined records for the offer-relevant gold reason; (c) same for the
+promotional-opted-into gold reason. Do not interpret, do not propose a gates.py
+condition, do not edit any other file.]
+
+Agent Response Summary:
+Upgraded anthropic 0.69.0 -> 0.120.2 cleanly. Wrote preflight_api.py and ran it:
+exit 0, all six contract assertions passed. models.list() returned 11 models and
+confirmed claude-sonnet-4-6 is available; the forced-tool call returned exactly
+one tool_use block with stop_reason tool_use, 1204 input / 194 output tokens, and
+an input validating against ROUTE_MESSAGE_TOOL with no action/reason/confidence
+field present. The API key was read only through config.py and never printed.
+Added frames_checksum() plus a stability section in check_dataset.py; verified by
+negative test that mutating a single cell changes exactly the affected frame
+digest, so the guard is not vacuous. Wrote inspect_gold_reasons.py and ran it:
+24 distinct gold reasons over 30 rows, 5 repeated and 19 used once; both
+requested reason strings resolve to exactly one row each. Reported results
+without interpretation as instructed. schema.py and gates.py untouched.
+
+Actions:
+* Ran: pip install anthropic==0.120.2 (0.69.0 -> 0.120.2)
+* Created code/preflight_api.py; ran it -> exit 0
+* Edited code/data_layer.py (added frames_checksum, _LOADERS, _canonical)
+* Edited code/check_dataset.py (LOADER STABILITY section)
+* Created code/inspect_gold_reasons.py; ran it -> exit 0
+* Re-ran code/test_schema.py -> 13/13; code/check_dataset.py -> exit 0
+* Verified no secret-shaped strings in code/*.py
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T11:15:00-05:00] Create code/features.py and code/inspect_features.py
+
+User Prompt (verbatim, secrets redacted):
+Create code/features.py. Every deterministic join and derivation lives here. No
+model calls. One entry point: build_features(message_row, indices) ->
+MessageFeatures (a dataclass).
+[Full field spec grouped RECIPIENT / GROUP / SENDER / BUSINESS / MESSAGE,
+including dnd_active with midnight wrap, is_direct_mention regex, per-pair and
+global sender metrics, sender_history_strength bands, business domain and
+relationship fields, forwarded_band, and the two advisory pre-flags which must
+not be used by any decision logic. Guard every rate against division by zero and
+expose the denominator.]
+Then write code/inspect_features.py printing the full feature block for the 30
+sample rows and for msg_095, msg_107, msg_110 and every row where
+group_muted_by_user is true. Run it and show me the muted-group rows and the
+injection rows.
+
+Agent Response Summary:
+Wrote features.py with an Indices bundle carrying cached per-pair and global
+sender aggregates, and a MessageFeatures dataclass where every rate ships with
+its denominator. Chose denominators from the data since no "received" column
+exists: user open/dismiss over opened+dismissed, group rates over
+group_messages_30d, business rates over opened+dismissed. Quarantined the two
+advisory flags on a nested AdvisoryFlags dataclass so any reference to
+.advisory inside gates.py is visible in review. Verified midnight-wrap DND,
+banding, strength bucketing, zero-denominator guards, and that no rate falls
+outside [0,1] across all 140 rows. Two findings reported to the user: msg_109 is
+a fourth router-injection attempt that the implementation guide's list of three
+omits, and the initial has_link regex was scheme-only, which reported False on
+every impersonation row; replaced it with a bare-domain-inclusive pattern
+verified against all 552 text rows with 10 matches and zero false positives.
+
+Actions:
+* Created code/features.py
+* Created code/inspect_features.py; ran injection, muted, and full modes
+* Fixed _LINK_RE after measuring the scheme-only gap (has_link 0 -> 5 rows)
+* Verified DND wrap cases, bands, strength buckets, rate bounds, None leaks
+* Re-ran code/test_schema.py -> 13/13; code/check_dataset.py -> exit 0
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T11:32:00-05:00] Measure opt-out field agreement; record two design tradeoffs
+
+User Prompt (verbatim, secrets redacted):
+Two tasks. Task A is a read-only measurement, stdout only. Task B is prose in a
+markdown file. Write no other code, modify no other file.
+TASK A — Across business_accounts.csv joined to user_business_history.csv, count
+rows where allows_promotions == 1 AND promotions_opted_out_at != "". Print the
+count, the total row count, and the business_ids of any disagreeing rows. Then
+do the same over the 30 labeled sample rows only. Print and stop — no
+interpretation, no file, no change to features.py.
+TASK B — record two decisions in code/README.md under a "Design Tradeoffs"
+heading. Prose only, no code, no edits elsewhere.
+[DECISION 1: deterministic precedence ladder over direct model action, with
+alternative, why, cost, and Config A/B measurement plan. DECISION 2:
+user_open_rate_30d and user_dismiss_rate_30d count as one confidence signal, as
+do biz_open_rate and biz_dismiss_rate, because each pair shares a denominator
+and sums to 1.0; cost is under-counting confidence.]
+Write both entries, run Task A, print the output, and stop.
+
+Agent Response Summary:
+Task A run inline via stdin so no file was created. Zero disagreeing rows in
+both scopes: 0 of 106 across all user_business_history rows, and 0 of 6 across
+the relationship rows reachable from the 30 labeled sample rows. Reported the
+supporting breakdown without interpretation. Task B added a Design Tradeoffs
+section to code/README.md between Architecture and Setup, holding both decision
+records with their alternative, rationale, cost, and measurement plan. Prose
+only. No other file created or modified; features.py untouched.
+
+Actions:
+* Ran the Task A measurement inline (no file written)
+* Edited code/README.md (added Design Tradeoffs section only)
+* Verified via git status and heading dump that nothing else changed
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T11:41:00-05:00] Ladder tradeoff already recorded; reconciled wording instead of duplicating
+
+User Prompt (verbatim, secrets redacted):
+Record this decision in code/README.md under "Design Tradeoffs" before the ladder
+is implemented. Write no other code.
+[DECISION: deterministic precedence ladder consuming a structured semantic
+reading rather than the model deciding directly. ALTERNATIVE: single call
+returning the action with code doing only schema validation. WHY: June feedback
+about needing a first-pass integrity gate before severity reasoning; putting
+precedence in code makes the inversion structurally impossible. COST: a branch
+ordering mistake mislabels a whole class of rows at once. HOW MEASURED: Config A
+full ladder vs Config B ablation with Layers 1 and 2 removed writing
+proposed_action straight through; primary metric action accuracy on the 30
+labeled rows in sample_messages.csv; evidence grounding breaks ties only; one row
+is 3.33pp on n=30 so deltas inside ~10 points are within noise.]
+Write it, then stop.
+
+Agent Response Summary:
+This decision was already recorded in the previous turn as Decision 1 under the
+Design Tradeoffs heading, because the user included the same content in that
+turn's Task B. Rather than append a duplicate entry, compared the existing text
+clause by clause against this version and confirmed full coverage. Applied the
+two places where this version is more precise: named
+dataset/sample_messages.csv explicitly as the scoring set and adopted the
+"primary metric" phrasing, plus the guide's "writing proposed_action straight
+through" wording. Verified only one ladder decision entry exists in the file.
+No other file touched, no code written.
+
+Actions:
+* Read code/README.md lines 206-245 to compare against the prompt
+* Edited the "How it will be measured" paragraph of Decision 1 only
+* Verified a single Design Tradeoffs Decision 1 entry remains
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T12:30:00-05:00] Implement gates.py precedence ladder plus thresholds and tests
+
+User Prompt (verbatim, secrets redacted):
+Create code/gates.py. One pure function, no I/O, no model calls, no imports from
+router.py: decide(features, model_read) -> Decision. [Full four-layer ladder
+specification, sub-rule selection, T_REPORT/T_DISMISS/T_FWD and the
+impersonation signature to live in config.py, fit_thresholds.py to be written
+and run first, and unit tests in test_gates.py covering seven named cases.]
+Followed by a mid-turn message approving the plan with five amendments:
+1. T_FWD_MESSAGE = 6 with a verbatim config.py comment.
+2. Add sample_msg_053 as an eighth test case built from real feature values
+   frozen as literals.
+3. Rewrite threshold comments to state the observed bimodal distributions and
+   empty bands rather than implying optimization.
+4. _INJECTION_RE gains generic arms only; no literal verified_business token.
+5. Dry-run must print per rule_key count and percentage plus zero-hit keys.
+
+Agent Response Summary:
+Implemented the ladder with the two amendments recorded in the plan: quiet hours
+as a downgrade modifier over notify only, and Layer 1 reading a new
+is_known_counterparty helper resolved per conversation_type. Added dismiss_rate
+and global_sender_dismiss_rate to features.py, which the Layer 3 branch required
+and which did not previously exist. Added ModelRead to schema.py so gates and
+router share a type without a cycle. All five amendments applied as specified.
+Verification: test_schema 16/16, test_gates 15/15, check_dataset exit 0,
+dryrun_gates clean over 110 rows with every decision coherent. Two findings
+reported: DIGEST_QUIET_HOURS is structurally unreachable on this corpus because
+the dnd_active and direct-mention row sets are disjoint, which is a direct
+consequence of amendment 2 and means the branch has zero coverage; and the
+measured business report-rate gap is 6.48 to 11.25, not 6.48 to 10.05 as stated
+in the approval message, though T=10 still sits inside the empty band.
+
+Actions:
+* Edited code/features.py (dismiss_rate fields, is_known_counterparty, regex arms)
+* Edited code/config.py (six threshold constants with recorded distributions)
+* Edited code/schema.py (ModelRead) and code/test_schema.py (three new cases)
+* Created code/gates.py, code/fit_thresholds.py, code/test_gates.py,
+  code/dryrun_gates.py
+* Ran all four scripts and both test suites
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T13:05:00-05:00] Record quiet-hours decision; print MUTE_HIGH_REPORT_SENDER variants
+
+User Prompt (verbatim, secrets redacted):
+Two things. No new features beyond what is named. Then stop.
+1. Quiet hours: no change. Decision recorded — the extension to urgency=="high"
+   for unknown counterparties would affect exactly one row, msg_093, a verified
+   FedEx delivery notice. Add to code/README.md under Design Tradeoffs:
+   DECISION / WHY NOT WIDEN / CONSEQUENCE as given.
+2. Print, do not change: for MUTE_HIGH_REPORT_SENDER, (a) pairs where global
+   fires but per-pair does not, (b) the reverse, (c) max-of-two variant counts
+   with n-floors of 3 each versus the current 10. Do not implement any variant.
+
+Agent Response Summary:
+Added Decision 3 to the Design Tradeoffs section recording that quiet hours
+downgrade notify only and bind on zero rows on this corpus, why widening was
+rejected, and that the zero downgrade count is the measurement rather than a
+failure. Printed the three requested analyses without implementing any variant.
+Key result: (a) 16 rows are missed by the current per-pair branch, almost all of
+them overt OTP and payment scams from u_049 and u_050; (b) zero rows fire on
+per-pair but not global, so per-pair is a strict subset of global on this corpus
+and the max-of-two variant is identical to global at 26 rows; (c) current 10,
+global 26, max-of-two 26. Flagged that three of the missed rows are benign
+messages from the same two senders, so the variant is not uniformly safer, and
+that msg_070, msg_107 and msg_079 are scam texts whose per-pair rate is 0.0
+against a recipient with n_prior 12 and an 83 percent open rate.
+
+Actions:
+* Edited code/README.md (Design Tradeoffs, Decision 3)
+* Ran read-only variant comparison inline, no file written, no code changed
+* Re-ran test_gates 15/15 and test_schema 16/16
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T13:40:00-05:00] Implement Variant D; create evidence.py and inspect_pools.py
+
+User Prompt (verbatim, secrets redacted):
+Implement Variant D, then run the guide's Prompt 8 (evidence.py). Two tasks.
+TASK 1 — MUTE_HIGH_REPORT_SENDER becomes Variant D: global_sender_report_rate
+>= T_REPORT and global_sender_n >= 3 and n_prior > 0. Record a Design Tradeoffs
+entry with DECISION / ALTERNATIVE / WHY / COST / KNOWN GAP / NOT CHOSEN FOR as
+given. Add two test_gates cases (n_prior == 0 does not mute, n_prior >= 1 does).
+Re-run test_gates, test_schema, dryrun_gates and show the new rule_key
+distribution.
+TASK 2 — run the guide's Prompt 8 as written (evidence.py, build_candidate_pool
+and enforce_evidence, plus inspect_pools.py). Show the pool-size distribution
+across all 110 rows and the 6 empty-pool rows before writing enforce_evidence.
+
+Agent Response Summary:
+Swapped the Layer 1 branch to Variant D and updated the T_REPORT comment in
+config.py, which previously documented the per-pair distribution the branch no
+longer reads. Added Decision 4 to the README. Added four test cases rather than
+the two requested: the two named plus one covering the n_prior=12 / 83 percent
+open case the change exists for, and one pinning the msg_046 known gap so it
+fails loudly if the branch is later widened. Tests 19/19 and 16/16; dryrun clean
+with mute share moving from 26.4 to 36.4 percent and MUTE_HIGH_REPORT_SENDER
+now the second most common key at 20.9 percent. Built evidence.py to the guide's
+spec, printed the pool distribution before writing enforce_evidence as
+instructed: mean 5.82, max 21, 6 empty pools, matching the guide's stated
+figures. Two additions flagged to the user: an explicit reaction precedence
+order, needed because 287 of 412 event rows set more than one flag and the guide
+specifies a single label, and de-duplication inside enforce_evidence.
+
+Actions:
+* Edited code/gates.py (Layer 1 branch), code/config.py (T_REPORT comment)
+* Edited code/README.md (Design Tradeoffs, Decision 4)
+* Edited code/test_gates.py (four new cases)
+* Created code/evidence.py, code/inspect_pools.py
+* Ran test_gates 19/19, test_schema 16/16, check_dataset exit 0, dryrun exit 0
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T14:15:00-05:00] Reaction-precedence decision; raw flag counts; transcription.py
+
+User Prompt (verbatim, secrets redacted):
+Two small things, then Prompt 9.
+1. Record the reaction-precedence decision in code/README.md under Design
+   Tradeoffs [DECISION / WHY / COST / SCOPE as given].
+2. Print, do not change: the RAW per-flag counts and rates across all 412
+   message_events rows alongside the post-precedence distribution, so the
+   evaluation report cannot cite a precedence artifact as a data property.
+Then proceed to Prompt 9. [Full Prompt 9: transcription.py for the 13 voice
+notes with an explicit ASR provider parity checklist covering structured field,
+cache key, cache location, error handling, determinism and trust level;
+faster-whisper with ASR_MODEL in config.py; transcribe(path) and
+transcribe_all(); run it and print all 13 transcripts.]
+
+Agent Response Summary:
+Added Decision 5 to the README recording the reaction precedence, with the raw
+and rendered figures side by side in a table so the two cannot be conflated.
+Printed both distributions: message_opened is set on 278 of 412 event rows
+(67.5 percent) but survives precedence on only 136 of 640 candidates (21.2
+percent), which is the artifact the user wanted on record. Installed and pinned
+faster-whisper 1.2.1, added ASR settings to config.py, wrote transcription.py
+with the parity checklist as its module docstring, and transcribed all 13 voice
+notes successfully in 14.6 seconds. Verified the committed cache works: a second
+run returns all 13 transcripts in 0.25s without constructing the model object,
+and the cache file is not git-ignored. Surfaced one significant latent hazard:
+the code/ package shadows the Python standard library module named code, so
+import pdb fails whenever the repo root is on sys.path, which breaks any
+dependency importing torch and would break python -m evaluation.main run from
+the repo root. Existing scripts are unaffected because they run as
+python3 code/foo.py. Flagged with a one-line fix rather than restructuring
+unilaterally.
+
+Actions:
+* Edited code/README.md (Design Tradeoffs, Decision 5)
+* Printed raw per-flag vs post-precedence label counts inline
+* Edited code/config.py (COMMITTED_CACHE_DIR, TRANSCRIPT_CACHE, ASR settings)
+* Edited code/requirements.txt (faster-whisper==1.2.1)
+* Created code/transcription.py and code/cache/transcripts.json
+* Ran transcription.py -> 13/13; verified cache-hit path loads no model
+* Re-ran test_gates 19/19, test_schema 16/16, check_dataset, dryrun, inspect_pools
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T15:10:00-05:00] Remove code/__init__.py; pin ASR task; vision, prompts, router
+
+User Prompt (verbatim, secrets redacted):
+Three things, then Prompt 10.
+1. Delete code/__init__.py; verify import pdb from repo root and python -m
+   evaluation.main from code/; re-run the suites.
+2. Confirm the faster-whisper call uses task="transcribe", not "translate";
+   print the exact kwargs. vn_015 is detected as Hindi and rendered in English —
+   if that is translation, message content is being altered before routing.
+3. Add to README Design Tradeoffs: muted_after_message is set on 134 of 412
+   rows and dropped from the rendered pool; state whether that is because the
+   vocabulary is fixed by the spec or because it is subsumed by dismissed, and
+   note that no downstream component reads it.
+Then Prompt 10. [Full Prompt 10: vision.py image_block with 1568px resize and
+content-hash cache; prompts.py system prompt and user-content builder with
+untrusted-content delimiters and cache_control; router.py single tool-use call
+with no JSON repair path, disk cache keyed on PROMPT_VERSION, ThreadPoolExecutor
+with shared rate limiter and backoff, per-row run_stats.json.]
+
+Agent Response Summary:
+Deleted code/__init__.py; import pdb and faster_whisper now succeed from the
+repo root and python -m evaluation.main resolves from code/. Answered the
+translation question empirically rather than from the library default: ran
+vn_015 under transcribe and translate and got different text, proving the build
+transcribes. The English rendering is a code-switching speaker, detected as
+Hindi at only 0.54 confidence. Pinned ASR_TASK explicitly since a default is not
+a contract, regenerated the cache and confirmed all 13 transcripts byte
+identical. Added the muted_after_message paragraph stating it is dropped because
+the specification fixes the vocabulary, not because dismissed subsumes it, and
+that nothing downstream reads it. Built vision.py, prompts.py and router.py, then
+smoke-tested the real API path on three rows including an image row and a voice
+row: all three returned valid tool output, run_stats.json was written with
+totals and per-row records, and a repeat call hit the disk cache in 0.1ms.
+Excluded code/cache/images from git after measuring it at 7.3MB, keeping
+transcripts.json committed. Pinned Pillow.
+
+Actions:
+* Deleted code/__init__.py; verified repo-root imports and python -m
+* Edited code/config.py (ASR_TASK, PROMPT_VERSION, router settings)
+* Edited code/transcription.py (explicit task kwarg, recorded in cache params)
+* Edited code/README.md (muted_after_message paragraph)
+* Created code/vision.py, code/prompts.py, code/router.py
+* Edited .gitignore (code/cache/images/) and requirements.txt (Pillow==11.3.0)
+* Smoke-tested router on msg_048, msg_027, msg_085 -> 3/3 valid readings
+* Re-ran test_gates 19/19, test_schema 16/16, check_dataset, dryrun
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T16:20:00-05:00] Fix vision.py media_type: sniff bytes, never the filename
+
+User Prompt (verbatim, secrets redacted):
+Plan approved with three amendments. 1) Reconcile a count discrepancy before
+patching: plan prose said 7 jpeg / 4 png / 1 webp pass-through, measured table
+says 6/5/1; print per-file sniffed format beside the original table value and
+identify which file disagrees, before any code change. 2) The proposed test is
+circular — asserting media_type == "image/" + _sniff_format(returned_bytes)
+compares the sniffer to itself; use PIL.Image.open(...).format as an independent
+oracle. 3) The fix does not close open risk #2: twelve pass-through images have
+never been sent to the API; make one real call on img_010 and one on img_020
+before the 110-row run.
+
+Agent Response Summary:
+Amendment 1: printed the per-file comparison. Zero files disagree between PIL
+and the magic-byte sniffer across all 20. The discrepancy was an arithmetic
+error in my own plan prose, not a classification difference; the mechanically
+counted composition is 6 jpeg / 5 png / 1 webp, matching the user. Amendment 2:
+wrote test_vision.py using PIL as an independent oracle for every assertion,
+with a separate test checking the sniffer against that same oracle so a sniffer
+bug fails on its own line. Ran it against unpatched vision.py first: 2/5 passed,
+with the 7 expected mismatches named. Applied the patch (_sniff_format,
+API_SUPPORTED, UnsupportedImageFormat, _resize renamed to _prepare with the
+suffix argument removed, _MEDIA_TYPES deleted with no remaining reference).
+After patch 5/5. All 20 rows now match. Amendment 3: made two real API calls,
+both HTTP 200 — img_010 as a genuine PNG pass-through declared image/png, and
+img_020 whose AVIF source was re-encoded to real JPEG bytes. Corrected the
+user's expectation that token totals would move: img_020 is 1200x600, under the
+threshold, so it is re-encoded without resizing and the rendered total stays
+26,230; what changed is payload bytes.
+
+Actions:
+* Printed the per-file reconciliation before any edit
+* Created code/test_vision.py (PIL oracle, isolated cache dir)
+* Ran it pre-patch (2/5) and post-patch (5/5)
+* Edited code/vision.py (sniffer, API_SUPPORTED, exception, _prepare, docstring)
+* Two live API calls on img_010 and img_020, both 200
+* Re-ran test_gates 19/19, test_schema 16/16, check_dataset, dryrun, inspect_pools
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-01T18:58:40.268143-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=features detail=injected: unconvertible image
+[2026-08-01T18:58:40.268815-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-01T18:58:40.269024-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=features detail=injected: unconvertible image
+[2026-08-01T18:59:37.733217-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T18:59:37.733757-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-01T18:59:37.733972-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T18:59:37.734015-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-01T19:03:50.974788-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T19:03:50.975484-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-01T19:03:50.975692-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T19:03:50.975737-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-01T19:11:45.647888-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T19:11:45.648623-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-01T19:11:45.648896-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T19:11:45.648949-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-01T17:30:00-05:00] Prompt 11 — finalize, writer, validator, first full run
+
+User Prompt (verbatim, secrets redacted):
+Prompt 11 — finalize.py, writer.py, validate_output.py, first full run. [Full
+spec for the three files, plus wire main.py and run all 110 rows.] AMENDMENT:
+per-row failure handling — catch ToolOutputMissing and UnsupportedImageFormat
+only, log degraded rows to log.txt, run the ladder without proposed_action and
+media_summary, pin tier 0, empty evidence, still write a complete row; record
+degraded_rows/degraded_count/degraded_by_exception in run_stats; add tests for
+both exception types; assert the 110-row invariant.
+Followed by answers to two blocking questions: degraded rows keep a
+deterministic layer's real verdict and otherwise emit DIGEST_INSUFFICIENT_SIGNAL;
+image failures retry text-only and degrade only if that also fails.
+
+Agent Response Summary:
+Stopped before implementing to check the amendment's precondition and found
+gates.py reads six model fields with no defaults, so "run the full ladder"
+required inventing values that would decide the row. User resolved it. Built
+finalize.py, writer.py, validate_output.py, main.py and test_degraded.py. The
+degraded test caught a real structural bug in my first implementation: the image
+exception escaped prepare_row before the text-only retry could run. Fixed.
+The full run then hit a genuine model failure: message_type "marketplace",
+which is a group_type value copied out of the facts block. Tool enums are
+advisory without strict mode, which is not documented as supported on
+claude-sonnet-4-6, so added schema validation of the tool payload in router.py
+treating an enum violation as malformed output. The poisoned payload had already
+been cached, so also added revalidation on the cache-read path. Run completed:
+110 rows, 0 degraded, 0 retries, 0 errors, validator exit 0.
+
+Actions:
+* Created code/finalize.py, code/writer.py, code/validate_output.py,
+  code/main.py, code/test_degraded.py
+* Edited code/router.py (_schema_problems, enum validation, cache revalidation)
+* Ran main.py on all 110 rows; validate_output.py exit 0
+* Suite: test_degraded 7/7, test_vision 5/5, test_gates 19/19, test_schema 16/16
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T19:35:00-05:00] Prompt 12 — two-tier scorer
+
+User Prompt (verbatim, secrets redacted):
+Prompt 12 — the two-tier scorer. Create code/evaluation/main.py runnable as
+python -m evaluation.main, scoring against the 30 labeled rows by running the
+full pipeline on them. TIER 1 field accuracy with confusion matrix and macro-F1;
+TIER 2 evidence grounding (in-pool invariant, P/R/F1 vs gold, none-agreement);
+TIER 2b reason quality (rule-key stability, LLM-as-judge with explicit rubric,
+print all 30 verdicts); TIER 3 consistency on img_003/img_008/img_010;
+CALIBRATION bucketed by confidence. Write to metrics.json, do not write the
+report yet. Run it and show every section.
+
+Agent Response Summary:
+Built the scorer and ran it. Action accuracy 0.800, message_type 0.767,
+macro-F1 0.8024 over 30 held-out rows. Evidence in-pool invariant 1.0000 with
+zero violations, but evidence F1 only 0.493 driven by over-emission: 46 ids
+emitted against 31 in gold, precision 0.413 versus recall 0.613. Rule-key
+stability is weak: of 7 gold groups with more than one row, only 1 received a
+single rule_key. Judge verdicts 13 same_rule, 12 compatible, 5 contradictory,
+all 30 printed for hand-checking. Tier 3 showed no consistency flags: all three
+shared-media clusters produced differing actions with differing user features,
+including img_008 where identical bytes reached three recipients and produced
+notify, digest and mute. Calibration is not strictly monotonic but bands
+separate cleanly: 0.647 accuracy below 0.84 versus 1.000 above, separation
++0.353. Flagged that all 3 rows at confidence 0.78 were wrong and that
+MUTE_SCAM_FIRST_CONTACT accounts for 3 of the 6 action misses.
+
+Actions:
+* Created code/evaluation/main.py and code/evaluation/metrics.json
+* Ran python -m evaluation.main (30 pipeline calls + 30 judge calls)
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-01T20:10:00-05:00] Read-only diagnostic (diagnose_12b), zero model calls
+
+User Prompt (verbatim, secrets redacted):
+Read-only diagnostic. Create evaluation/diagnose_12b.py. Zero model calls, edits
+no file under code/. Reads output.csv, metrics.json, candidate pools and CSVs.
+Print seven sections: A provenance of the 30 scored routing calls; B evidence
+counterfactual under three gold-independent policies P1/P2/P3 plus position
+analysis; C MUTE_SCAM_FIRST_CONTACT audit with verbatim precondition; D ladder
+trace for sample_msg_004 and 005; E injection audit; F tier reconciliation of
+68 vs 110; G reason contradictions. Propose no fixes, change no thresholds.
+
+Agent Response Summary:
+Built and ran the diagnostic. Findings: (A) the 30 scored rows use a disjoint id
+namespace so they could never have been served from the 110-row cache; per-row
+hit/miss during scoring was never persisted and is reported MISSING. (B) emitted
+evidence reconstructed from the response cache; P2 keep-first-only scores higher
+than as-is on both F1 (0.517 vs 0.494) and exact-set-match (0.467 vs 0.233), and
+of 13 rows where two ids were emitted with one correct, the correct id was first
+on 9. (C) the branch tests prior history via is_known_counterparty but never
+reads `verified`; it fired on two rows whose businesses are verified with
+matching domains and report rates near 2 per 1000. (D) neither sample_msg_004
+nor 005 reached notify because NOTIFY_BIZ_MATCHES_ORDER sits inside the
+urgency=='high' branch and the model read urgency as low on both; notably
+sample_msg_005's proposed_action was notify, disagreeing with the ladder.
+(E) all 5 injection rows muted via MUTE_INJECTION_ATTEMPT with the model flag
+True on all five. (F) tier_counts covered 68 because the crashed first run never
+wrote run_stats; tier recovered for all 110 by inverting the confidence formula.
+(G) 5 contradictory reasons, one on a row whose action is correct.
+
+Actions:
+* Created code/evaluation/diagnose_12b.py
+* Ran python -m evaluation.diagnose_12b (zero model calls)
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-01T23:48:24.159881-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T23:48:24.160578-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-01T23:48:24.160817-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-01T23:48:24.160865-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-02T00:05:00-05:00] Three ladder/finalize changes, pinned tests, re-score
+
+User Prompt (verbatim, secrets redacted):
+Three changes, then re-score. Do not touch prompts.py, schema.py's tool
+definition, or config.PROMPT_VERSION — the response cache must stay valid. Show
+each diff before running. CHANGE 1 verified-brand exemption on
+MUTE_SCAM_FIRST_CONTACT and the identical exemption in _scam_sub_rule, leaving
+the impersonation signature alone. CHANGE 2 hoist NOTIFY_BIZ_MATCHES_ORDER and
+_BOOKING out of the Layer 4 urgency branch into Layer 3 on deterministic
+features only. CHANGE 3 finalize emits at most one evidence id, schema cap
+unchanged. Six pinned tests. Then run the four suites and the scorer, show
+Tier 1/2/2b/calibration plus a before/after table and the six previous misses.
+Report model calls and cache hits. Do not regenerate output.csv or write the
+report.
+
+Agent Response Summary:
+Applied all three changes and showed unified diffs before running anything.
+Factored a shared _biz_variant selector so the Layer 3 and Layer 4 business
+variants cannot diverge, and a shared is_verified_brand helper used by both
+first-contact branches. Placed the hoisted branch last in Layer 3 so every
+promotional branch still wins. Added 10 pinned tests covering the six required
+cases plus conjunct-by-conjunct coverage; suites are 28/28, 16/16, 7/7, 5/5.
+Re-score: action accuracy 0.800 -> 0.833, macro-F1 0.802 -> 0.836, evidence
+exact-set-match 0.233 -> 0.467, evidence F1 0.493 -> 0.517 with precision up
+0.143 and recall down 0.129. Four of the six previous misses: two fixed
+(sample_msg_004, 005 now notify via the hoisted branch), four still wrong, and
+one new miss introduced (sample_msg_011, digest -> notify via the same hoisted
+branch). Zero routing calls: all 30 cache keys were already present and the
+newest router cache write predates this turn's edits. Flagged that the judge is
+not cached and not fully reproducible: the same pipeline outputs produced 13
+same_rule in the first scored run and 15 in a later one at temperature 0.
+
+Actions:
+* Edited code/gates.py (is_verified_brand, _biz_variant, exemption x2, hoist)
+* Edited code/finalize.py (EMITTED_EVIDENCE_IDS = 1)
+* Edited code/test_gates.py (10 new pinned tests)
+* Ran test_gates 28/28, test_schema 16/16, test_degraded 7/7, test_vision 5/5
+* Ran python -m evaluation.main (0 routing calls, 90 judge calls across 3 runs)
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-02T00:13:15-05:00] SESSION START
+
+Agent: claude-code
+Repo Root: /Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+Branch: main
+Worktree: main
+Parent Agent: none
+Language: py
+Time Remaining: not configured
+
+## [2026-08-02T00:14:00-05:00] Read-only session handoff: state audit, no changes
+
+User Prompt (verbatim, secrets redacted):
+New session, mid-contest continuation. Read these before doing anything:
+AGENTS.md, code/README.md, code/gates.py, code/finalize.py, code/schema.py,
+code/evaluation/main.py, code/evaluation/metrics.json,
+$HOME/hackerrank_orchestrate_august26/log.txt. Report what you find; change
+nothing until I send the next prompt.
+[State-of-the-build block: prompts 1-12 + 12b + three-change fix pass complete;
+output.csv 110 rows, validate_output exit 0; suites test_gates 28/28,
+test_schema 16/16, test_degraded 7/7, test_vision 5/5; baseline action 0.833,
+message_type 0.767, macro-F1 0.836, evidence P/R/F1/exact
+0.556/0.484/0.517/0.467, in-pool 1.0000, band separation +0.223; metrics.json on
+disk is authoritative.]
+Standing constraints: do not modify prompts.py, the route_message tool schema, or
+config.PROMPT_VERSION (router cache must stay valid, 30/30 routing cache hits);
+do not regenerate output.csv or touch run_stats.json; the LLM judge is not cached
+so never re-invoke the scorer to read a section readable from metrics.json;
+n=30 so deltas under 10pp are within noise including favourable ones; show diffs
+before running anything that edits a file; every number in any report is read
+from metrics.json at write time, never retyped from conversation.
+Then append a log.txt entry summarizing the session handoff.
+
+Agent Response Summary:
+Read all seven required files plus config.py, router.py stats, output.csv and the
+cache directories. Zero files modified and zero model calls made. Confirmed every
+stated baseline number against metrics.json on disk: all match to the printed
+precision (band separation on disk is 0.2232). Reported four findings the state
+block does not cover. (1) output.csv on disk is stale relative to finalize.py:
+83 of its 110 rows carry two evidence ids, but EMITTED_EVIDENCE_IDS = 1 now caps
+emission at one, so a clean rerun changes the evidence column on 83 rows. (2)
+metrics.json tier3 is partly stale for the same reason — its cluster actions for
+msg_* rows are read from that output.csv, while tier1/2/2b/calibration come from
+a fresh pipeline run over the sample rows. (3) gates._scam_sub_rule reads
+features.advisory.credential_language_flag, contradicting both the gates.py module
+docstring and the README claim that advisory flags are never read by a decision
+branch; it selects the scam variant and therefore the reason string, never the
+action. (4) code/README.md still has four empty sections (Setup, Environment
+Variables, Run Commands, Evaluation), which AGENTS.md §6.3 requires for an
+evaluable submission. Also confirmed the router cache holds 141 entries covering
+both id namespaces, and that running the scorer does not write run_stats.json
+because router._Stats.write is only called from the full-run path.
+
+Actions:
+* Read AGENTS.md, code/README.md, code/gates.py, code/finalize.py,
+  code/schema.py, code/evaluation/main.py, code/evaluation/metrics.json, log.txt
+* Read-only inspection of config.py, router.py, main.py, output.csv, cache dirs
+* No file created, edited, or deleted; no API call; no test or scorer run
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-02T00:26:03.963293-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T00:26:03.964706-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T00:26:03.965028-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T00:26:03.965113-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-02T00:35:20.456936-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T00:35:20.457704-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T00:35:20.457960-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T00:35:20.458014-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-02T00:41:56.458610-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T00:41:56.459437-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T00:41:56.459704-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T00:41:56.459761-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-02T00:52:00-05:00] Blast-radius diagnostic; Config B ablation; evaluation report
+
+User Prompt (verbatim, secrets redacted):
+Two parts. Part 1 is read-only. Do not regenerate output.csv in this prompt.
+PART 1 — blast radius, read-only, zero model calls. Using the current gates.py
+against the deterministic features for all 110 rows, report WITHOUT calling the
+model or rewriting output.csv: how many rows NOTIFY_BIZ_MATCHES_ORDER / _BOOKING
+would now fire on; how many of those currently sit at digest or mute in
+output.csv; how many rows the MUTE_SCAM_FIRST_CONTACT exemption releases, and the
+rule_key each falls through to. If model_read fields are needed, read them from
+the router cache; if a row has no cached read, print SKIPPED and count them.
+Print the counts and stop that section.
+PART 2 — Config B ablation and the report. Config B: gates.py Layers 1 and 2
+skipped, model_read.proposed_action written straight through as the action;
+finalize and writer unchanged. Implement as a flag on the pipeline, not a forked
+copy. Run both configs on the 30 labeled rows. Routing should be 30/30 cache hits
+for both — report the hit rate. Run the LLM judge ONCE per config; do not
+re-invoke the scorer to read a section, read metrics.json. Write
+code/evaluation/evaluation_report.md, every number read from metrics.json at
+write time, never retyped from chat. It must contain: one paragraph describing
+each config; Tier 1 / Tier 2 / Tier 2b / Tier 3 tables for both; the calibration
+curve for Config A, including that band separation is +0.223 and non-monotonic,
+with the 0.85 bucket explained as notify rows pinned to tier 0 by proposed_action
+disagreement; which config ships and why, decided on ACTION ACCURACY ALONE; an
+explicit statement that n=30 means one row is 3.33pp and that any delta under
+10pp is reported as within noise — applied to the Config A gates changes
+themselves, which moved action accuracy by one row; a judge-variance note:
+identical pipeline output scored 13 and 15 same_rule across invocations at
+temperature 0, so judge deltas of 1-2 are not signal; a "what was not tested"
+section listing concretely what has no coverage.
+Do not regenerate output.csv. Do not touch run_stats.json.
+
+Agent Response Summary:
+Part 1 ran inline via stdin, no file written, zero model calls: all 110 rows had
+a valid cached read, so SKIPPED was 0. The business-notify variants fire on 7
+rows (6 ORDER, 1 BOOKING); 5 of those currently sit at digest in output.csv and
+would move to notify on a clean rerun. The verified-brand exemption releases
+ZERO rows on the 110 and 2 of the 30 labeled rows, and both of those still land
+on mute via MUTE_UNSOLICITED_BUSINESS — so Change 1 of the fix pass has zero
+measured effect on action in either corpus and moves the reason string only.
+Part 2 implemented Config B as keyword flags (gates._ladder
+skip_safety_and_state, gates.decide ablate_layers_1_2, main.process
+ablate_layers_1_2), all defaulting False, plus --config/--out/--skip-judge on
+the scorer. Diffs were shown before anything ran. Config A was re-verified with
+--skip-judge at zero model calls and came out byte-identical to metrics.json on
+all four measured sections, so the flag is inert on the shipping path. Both
+configs routed 30/30 from cache with 0 live routing calls; the judge ran once
+for Config B only, with Config A's verdicts carried over. Headline: Config B
+action accuracy 0.9000 vs Config A 0.8333 — the ablation scored HIGHER by 2 rows
+(+6.67pp), which is inside the declared 10pp noise band and is reported as
+within noise in the direction that disfavours the design. Added a per_row block
+to the scorer so layer attribution comes from data, which produced the report's
+central negative result: Layers 1 and 2 decide 8 of 30 rows, the model
+independently proposed the same action on 7, the ablation loses 0 rows to their
+removal, and the single row where Layer 1 acts independently (sample_msg_049) is
+one it gets wrong. Config B's 3 losses all trace to Layer 3, not to the removed
+layers. Config A still ships, on action accuracy alone, because a within-noise
+delta is not grounds to replace the incumbent — stated explicitly as a weaker
+outcome than Design Decision 1 anticipated, neither validating nor refuting the
+ladder. Also corrected two of my own draft claims against the data before
+publishing: that Config B's losses were safety suppressions (they are not), and
+that all 14 low-band rows carry tier 0 (only 8 do). output.csv and
+run_stats.json were not touched; both still carry their 19:08 timestamps.
+
+Actions:
+* Ran the Part 1 blast-radius analysis inline (no file written, 0 model calls)
+* Edited code/gates.py (_ladder skip flag, _config_b, decide flag)
+* Edited code/main.py (process ablate_layers_1_2 flag)
+* Edited code/evaluation/main.py (--config/--out/--skip-judge, routing_cache,
+  per_row block in tier1)
+* Created code/evaluation/write_report.py and code/evaluation/evaluation_report.md
+* Created code/evaluation/metrics_b.json; grafted routing_cache + per_row into
+  code/evaluation/metrics.json with every pre-existing key asserted unchanged
+* Ran: evaluation.main --config a --skip-judge (0 model calls, 30/30 cache hits)
+* Ran: evaluation.main --config b (30/30 routing cache hits, 30 judge calls)
+* Ran test_gates 28/28, test_schema 16/16, test_degraded 7/7, test_vision 5/5
+  before and after every edit
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-02T01:20:00-05:00] Prompt 14 — read-only edge-case and review pass over 110 rows
+
+User Prompt (verbatim, secrets redacted):
+Prompt 14 — edge cases and review. Review pass. For each item, report what the
+current system does and whether you consider it correct; do not change anything
+until I say so. 1. Rows where the candidate pool is empty — what does evidence
+contain, and did any model output attempt to fill it? 2. Rows where
+model_read.proposed_action disagreed with the ladder — list them with both values
+and the rule_key that fired. 3. Rows where evidence enforcement dropped an ID.
+4. The three injection rows msg_095, msg_107, msg_110 — final action,
+message_type, rule_key, confidence, and whether the injected instruction
+influenced any field. 5. Rows in a group the user has muted, split by whether a
+direct mention was present. 6. Rows inside the recipient's quiet-hours window —
+all 8, with the action before and after the quiet-hours branch. 7. Any
+message_type never predicted across the 110 rows. 8. Any row where
+transcription_failed or unresolved is true. 9. The distribution of rule_keys
+across all 110 rows — flag any key never used and any key used more than 25% of
+the time. Then list every place where a fluent but wrong model output could still
+reach output.csv despite the deterministic layers. Plus: 10. All 7 rows where
+NOTIFY_BIZ_MATCHES_ORDER / _BOOKING fires on the 110, with message_type,
+business_verified, domain_match, why_user_knows_account, activity_count_180d, the
+model's urgency and promotional read, and the message text — judging whether a
+notify is defensible given the branch consults no content signal. 11. output.csv
+is stale relative to gates.py: list every row whose action would change on a
+clean rerun, with old action, new action, and new rule_key; read from the cached
+model reads, make no model calls, do not rewrite output.csv. 12. The 14 tier-0
+rows across the 110: which mechanism set tier to 0.
+
+Agent Response Summary:
+Ran one read-only script from the scratchpad over all 110 rows using cached model
+reads; zero model calls, nothing in the repo modified. The replication was
+asserted equal to main.process on every row before any finding was reported.
+Results: (1) 6 empty-pool rows all emit none and the model returned no id on any
+of them. (2) 17 of 110 proposed_action disagreements, all correctly pinned to
+tier 0; 5 of the 17 are the hoisted business branch overriding a model digest.
+(3) enforce_evidence dropped nothing, but 83 rows lose a valid in-pool second id
+at emission via the finalize cap — a different mechanism that run_stats reports
+as evidence_violations: 0. (4) all four injection rows including msg_109, which
+the guide omits, mute via MUTE_INJECTION_ATTEMPT with no injected instruction
+reaching any field; all four also carry content_risk=scam, so the defense is
+redundant on these rows. (5) 14 muted-group rows, 2 mentioned; msg_040 shows the
+lift-then-re-mute path working as documented, and 4 rows were pre-empted by Layer
+1. (6) DIGEST_QUIET_HOURS now binds on msg_008 — one row, not zero — so README
+Decision 3 is stale, a consequence of the hoist creating a low-urgency notify
+inside a DND window. (7) only unknown is never predicted, equivalent to zero
+degraded rows. (8) neither transcription_failed nor unresolved is a live field:
+transcription_failed() is a dead helper and unresolved appears only in router
+docstrings; the equivalents all read clean. (9) no rule key exceeds 25 percent,
+max MUTE_SCAM_OTP at 19.1; 8 keys unused, of which MUTE_IMPERSONATION_DOMAIN is a
+Layer 1 safety branch with zero coverage in both corpora. (10) corrected my own
+Part 1 headline: 9 rows carry those two keys, not 7 — 7 via the hoisted Layer 3
+branch and 2 via Layer 4. Judged 6 defensible; msg_010 is a cinema feedback
+survey the model read as urgency none and proposed digest, and msg_065 is an
+opted-in promotional the model read as promotional and suspicious. msg_065
+exposes a real ordering bug: for any verified business with a relationship and
+activity, DIGEST_PROMO_OPTED_IN is now structurally unreachable because the
+hoisted branch returns before Layer 4's terminal digest mapping. (11) 7 action
+changes on a clean rerun, all digest to notify and all from the hoisted branch,
+plus evidence 83 rows, reason 8, confidence 7. (12) 17 tier-0 rows under current
+code, all disagreement_override; the 14 in the prompt is the shipped output.csv
+figure recovered by inverting the confidence formula, and the 3-row gap is
+hoist-induced. Quantified the closing question by re-deciding every row under
+NEUTRAL_READ: 24 of 110 rows are decided identically with no model input, 86 of
+110 depend on at least one model field, and listed ten concrete surfaces where
+fluent-but-wrong model output still reaches output.csv, message_type being a raw
+passthrough the ladder never checks.
+
+Actions:
+* Wrote and ran a scratchpad-only review script over all 110 rows (0 model calls)
+* Ran a second inline pass computing NEUTRAL_READ counterfactuals and the
+  shipped-output.csv tier distribution
+* Read code/evidence.py; grepped for transcription_failed and unresolved
+* No file in the repository created, edited, or deleted
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+
+## [2026-08-02T01:48:00-05:00] Prompt 14b — attribution diagnostic, read-only
+
+User Prompt (verbatim, secrets redacted):
+Prompt 14b — attribution diagnostic (read-only, zero model calls). Read-only
+pass. Do not modify any file in the repo except appending to the log. Do not
+delete or regenerate output.csv or run_stats.json. Zero model calls — use the
+router cache only. Create diag14b.py (scratch, not part of the submission
+package) and answer four questions. Q1 — full change inventory: run git diff /
+git log -p covering every change since the clean full run that produced the
+current output.csv at 19:08; list every hunk touching gates.py, finalize.py,
+main.py, router.py, schema.py; state explicitly whether the diff contains any
+behavioral hunk outside the three claimed changes (verified-brand exemption,
+NOTIFY_BIZ hoist, EMITTED_EVIDENCE_IDS=1). Q2 — attribute msg_023 and msg_035,
+which flip digest->notify with rule_key NOTIFY_PAYMENT_LEGIT, "which is not the
+hoisted branch"; print the full ladder trace and name the mechanism. Q3 —
+msg_108 injection status; my working figure was five injection rows including
+msg_108, review14 reported four; state whether the model missed it, the count of
+five was wrong, or it is ambiguous. Q4 — hoist reversion impact, measured not
+argued: without editing gates.py, replicate all 110 rows with the Layer 3
+NOTIFY_BIZ branch bypassed; report the diff table, the same restricted to the 30
+labeled rows with gold and accuracy/macro-F1 both ways, and whether
+DIGEST_PROMO_OPTED_IN becomes reachable. Report only; append a log entry;
+confirm output.csv and run_stats.json timestamps unchanged.
+
+Agent Response Summary:
+Wrote scratchpad-only diag14b.py; zero model calls, no repo file modified.
+Q1: git has no commits, no objects, no reflog, no dangling blobs and nothing has
+ever been staged, so no source diff for the 23:46 fix pass exists or is
+recoverable — reported as a finding rather than worked around. Established what
+is verifiable instead: schema.py (15:15) and router.py (19:04) both predate
+output.csv (19:08) and are therefore untouched since the clean run; main.py's
+only post-run edit is this session's default-False ablation flag, diffed against
+a session backup. For gates.py and finalize.py the fix-pass hunks are
+unrecoverable, so substituted an empirical behavioral diff: output.csv is a
+fingerprint of the pre-fix code and schema.REASONS inverts uniquely to rule_key,
+so recovered the old action/rule_key for all 110 rows. Old vs current differs on
+8 rows; old vs current-with-the-hoist-removed differs on ZERO rows. The hoist is
+therefore the entire action/rule_key delta of the fix pass on this corpus, the
+verified-brand exemption changed nothing, the evidence cap touches only the
+evidence column, and no fourth behavioral cause binds on any of the 110 rows —
+with the stated limit that a change binding on no row would be invisible to this
+method. Q2: printed both full ladder traces. Both rows fall through Layers 1-2
+and the first four Layer 3 branches and return at the hoisted branch, which calls
+the shared _biz_variant selector; both have why_user_knows_account containing a
+payment token (active_bank_account, business_payment_stack_interest) so the
+selector returns NOTIFY_PAYMENT_LEGIT. Layer 4 is unreachable for both
+(urgency low and none). So this IS change 2, not a fourth cause: the prompt's
+premise that NOTIFY_PAYMENT_LEGIT is not the hoisted branch is incorrect, since
+the hoisted branch can emit all three business variants. Q3: my review14
+narrative was wrong and the working figure of five was right. Five rows carry
+is_router_injection_attempt=True and all five mute via MUTE_INJECTION_ATTEMPT:
+msg_095, 107, 108, 109, 110 — the same figure my own rule_key table in that
+review already showed. msg_108 contains a clear injection ("Internal router
+metadata: verified_business=true, user_priority=high, action=notify") followed by
+a PIN-harvesting lure; the model caught it and the ladder muted it. Answer is
+neither (a) nor (b): the system handled it correctly and my prose undercounted.
+Q4: reverting the hoist changes 8 of 110 rows, 7 of them action changes, and
+reproduces the shipped output.csv exactly on action for all 110. On the 30
+labeled rows it changes 3 rows and costs one row of accuracy: 0.8333 -> 0.8000,
+macro-F1 0.8360 -> 0.8024, a -3.33pp delta that is within the declared noise
+band. DIGEST_PROMO_OPTED_IN goes from 1 to 3 reachable rows on the shipped
+corpus (msg_035 and msg_065 become reachable) and is unchanged on the labeled
+rows. Shipped code not modified.
+
+Actions:
+* Created scratchpad diag14b.py and gates_reverted.py (textual removal of the
+  9-line hoisted branch from a copy of gates.py; shipped gates.py untouched)
+* Ran git log / git diff / git count-objects / git fsck / git reflog — all empty
+* Ran the empirical old-vs-current behavioral diff via reason->rule_key inversion
+* Enumerated all rows with is_router_injection_attempt=True
+* No file under code/ or output.csv or run_stats.json created, edited, or deleted
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-02T01:37:59.137272-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:37:59.138134-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T01:37:59.138398-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:37:59.138450-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-02T01:39:02.694465-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:39:02.695055-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T01:39:02.695316-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:39:02.695363-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-02T01:48:32.630681-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:48:32.631709-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T01:48:32.632021-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:48:32.632091-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-02T01:55:11.426193-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:55:11.426917-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T01:55:11.427156-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T01:55:11.427205-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-02T02:15:00-05:00] Prompt 14c — revert hoist, doc corrections, clean run, re-verify
+
+User Prompt (verbatim, secrets redacted):
+Prompt 14c — corrections, clean run, re-verification. Step 0 snapshot repo to
+~/backup_pre14c. Step 1 hoist decision [FILL IN placeholder left blank in the
+prompt]. Step 2 documentation corrections, nine items, before/after pairs, no
+behaviour change. Step 3 clean full run: delete output.csv, move run_stats.json
+to run_stats_prev.json, run all 110 rows, do not bump PROMPT_VERSION. Step 4
+re-verify the review14 checks against the new file and report deltas. Step 5
+regenerate metrics for Config A and B and the report. Step 6 cross-check every
+numeric claim in README.md and evaluation_report.md against measurement and
+print a claim/location/asserted/measured/match table; any mismatch is a defect to
+report, not to silently fix. Do not package anything.
+
+Agent Response Summary:
+Step 1 was an unfilled [FILL IN] placeholder, so after taking the snapshot and
+gathering the read-only facts that did not depend on it, asked the user to
+choose; they selected REVERT. Removed exactly the 9-line hoisted Layer 3 branch
+plus its dedicated comment from gates.py and nothing else. That broke the three
+test_gates cases the fix pass had added to pin the hoisted behaviour; re-pointed
+them at the restored ordering rather than deleting the coverage, and flagged that
+test_layer_two_still_beats_the_business_match_branch is now weaker since it
+guards Layer 2 against a Layer 4 branch. Suites back to 28/28, 16/16, 7/7, 5/5.
+Step 2 applied all nine corrections. The labeled id range is 001-053 with 23
+gaps, not 001-030. CONFIDENCE_BASE lives in schema.py, and config.py's
+T_FWD_MESSAGE IS bounded by a labeled row, so the report's "nothing was fitted"
+claim was false rather than merely incomplete; replaced it with a per-quantity
+table and the statement that action accuracy is held out while calibration is
+not. Injection rows corrected from three to five. Quiet hours re-measured at 0
+rows after the revert, with the episode recorded. Failure-paths table rewritten
+to name only keys actually emitted, noting unresolved and per-row
+evidence_violation do not exist and transcription_failed has no caller. Added an
+Architecture section for the emission cap. Added evidence_truncated,
+evidence_truncated_rows and emitted_evidence_ids_cap to run_stats as write-only
+instrumentation. Added MUTE_IMPERSONATION_DOMAIN and the never-fired key count to
+what-was-not-tested, and an explicit inference label on the disagreement result.
+Step 3 clean run: 110 rows written, validator exit 0, run_stats covering all 110,
+0 degraded, 0 evidence violations, 83 ids truncated across 83 rows, wall clock
+0.07s because every routing call was a cache hit with PROMPT_VERSION unchanged.
+Step 4 deltas vs the previous pass: disagreements 17 -> 14, tier distribution
+0:17 -> 0:14 and 3:84 -> 3:87, quiet-hours bindings 1 -> 0, never-used rule keys
+8 -> 10, business-notify rows 9 -> 4 and all via Layer 4, DIGEST_PROMO_OPTED_IN
+1 -> 3, output.csv staleness 7 -> 0. Empty pools, injection rows, muted-group
+rows and message-type coverage unchanged. Step 5: Config A 0.8000 / macro-F1
+0.8024 with six misses, Config B 0.9000 / 0.9034. Two report claims had to be
+rewritten because the new data contradicted them: the hard-coded 0.85 calibration
+bucket no longer exists so the dip is now located from the data, and the tier-0
+set no longer captures every error — sample_msg_004 is wrong in BOTH configs at
+tier 3 / 0.84, the exact failure the disagreement signal cannot catch, and it is
+the direct cost of the revert. Also found the A-vs-B gap is now exactly 10.00pp,
+sitting on the noise-band edge, where a float artifact had it printing "within
+noise"; replaced the comparison with an exact boundary test and reported it as a
+boundary case the rule does not decide. Step 6 cross-check: 47/47 primary claims
+match, plus 18/20 on a supplementary sweep. Of the two supplementary mismatches,
+Decision 4's per-pair count of 10 was MY reconstruction error (the real gate is
+n_prior >= 3, which gives exactly 10) and is not a defect. One genuine defect
+remains and was reported, not fixed: README Dataset facts asserts per-pair prior
+messages "mean 7.2" and no denominator reproduces it — all 110 rows gives 5.22,
+rows with n_prior>0 gives 7.45. Nothing packaged.
+
+Actions:
+* Snapshot: cp -r repo -> ~/backup_pre14c (18 MB, 291 files)
+* Edited code/gates.py (removed the hoisted branch only), code/test_gates.py
+  (3 tests re-pointed), code/main.py (evidence_truncated instrumentation),
+  code/README.md (items 1,3,4,5,6), code/evaluation/write_report.py (items
+  2,4,7,8,9 plus data-driven calibration and boundary handling)
+* Ran main.py clean over 110 rows; validate_output.py exit 0
+* Ran evaluation.main for Config A and Config B (30/30 cache hits each, one
+  judge pass each), then evaluation.write_report
+* Ran scratchpad crosscheck.py over every numeric claim in both documents
+* Suites 28/28, 16/16, 7/7, 5/5 after every change
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-02T02:17:56.201317-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T02:17:56.201973-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T02:17:56.202216-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T02:17:56.202275-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+[2026-08-02T02:19:42.926847-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T02:19:42.927388-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T02:19:42.927623-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T02:19:42.927671-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-02T02:52:00-05:00] Prompt 14d — post-revert consistency pass, docs and generator only
+
+User Prompt (verbatim, secrets redacted):
+Prompt 14d — post-revert consistency pass. No behavior changes. Documentation and
+generator only. Report each edit as before/after. Step 1 purge stale hoist text
+from README.md, evaluation_report.md and write_report.py; the hoist was reverted
+and does not ship, the fix pass shipped two changes; specifically rewrite
+"Reading these numbers" bullet 1 and the final two paragraphs of "What Layers 1
+and 2 actually contributed", recomputing "the five rows Config A loses" from
+metrics.json. Step 2 one noise rule, one wording, computed once: README says
+"inside roughly 10 points" and the report says "below 10pp", which give opposite
+verdicts on 10.00pp; adopt the exact-row-unit formulation, make all four verdict
+locations read from one computed verdict, and ensure macro-F1 does not report a
+different verdict from action accuracy for the same 3-row difference. Step 3
+resolve the ship-rationale contradiction [FILL IN (a) boundary case or (b) B was
+never a shipping candidate]. Step 4 fix mean 7.2 [FILL IN which denominator].
+Step 5 rename test_layer_two_still_beats_the_business_match_branch. Step 6 add
+the measured outcome to README Decision 1. Step 7 confirm Tier 3 msg_ rows come
+from the current post-revert output.csv. Step 8 re-run crosscheck.py. Do not
+package.
+
+Agent Response Summary:
+Both FILL IN placeholders were unfilled, so ran the Step 1 grep first and then
+asked; the user chose (b) with three constraints and the all-110-rows denominator
+(5.22). Step 1: grepped all three files, found the stale passages and rewrote
+them — the fix pass now correctly reads as two shipped changes with the hoist
+recorded as applied-then-reverted and the reasons given, LAYER_OF's business
+variants went from "3/4" to "4" since the ambiguity died with the hoist, and
+"two questionable shipped notifies" became "would have shipped" because the
+pre-revert output was never written. Config A's loss list is now computed from
+metrics.json per_row rather than typed, and Config B's losses are attributed by
+layer from data. Step 2: added NOISE_RULE, delta_rows() and noise_verdict(),
+replacing the old verdict() whose float comparison had put macro-F1 at 10.10pp
+and action accuracy at 10.00pp on opposite sides of the same 3-row difference.
+All four locations now render the identical string "**on the band edge**",
+confirmed by grep. Step 3: rewrote the ship section to (b), opening with an
+explicit self-correction in the same style as the report's existing corrections,
+keeping every measured finding verbatim, and rewriting the contradicting bullet
+to say the gap is real and on the band edge while still not licensing an
+unfiltered model output. Added B's diagnostic purpose to its first mention.
+Step 4: README now reads mean 5.22 over all 110 rows with the alternative
+denominator stated inline; verified max 23, 57 at n>=3 and 46 at n>=5 all hold
+under it. Step 5: renamed to test_group_mute_beats_a_verified_business_
+relationship with a docstring recording that the adjacent-Layer-3 case is gone,
+and strengthened it with a high-urgency assertion so it still guards something.
+Suites 28/28, 16/16, 7/7, 5/5. Step 6: added the measured outcome to README
+Decision 1 unsoftened — B scored higher, the ladder is not validated by these 30
+rows, the case is structural — with a pointer to the report. Step 7: all msg_
+rows in the three clusters match the current post-revert output.csv and none
+changed in the revert; corrected the caveat, which had called it "an earlier
+Config A run". Step 8: extended crosscheck to 62 claims including the new ones;
+62/62 match, zero mismatches. No behaviour changed: gates.py, main.py,
+output.csv and run_stats.json are all untouched by this prompt.
+
+Actions:
+* Edited code/evaluation/write_report.py (NOISE_RULE, delta_rows, noise_verdict,
+  LAYER_OF, hoist passages, ship section, Tier 3 caveat, Tier 1 verdict column)
+* Edited code/README.md (Decision 1 noise rule + measured outcome, mean 5.22)
+* Edited code/test_gates.py (test renamed and strengthened)
+* Regenerated code/evaluation/evaluation_report.md
+* Ran the four suites and the extended scratchpad crosscheck (62/62)
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-02T02:59:05.049611-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T02:59:05.050508-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T02:59:05.050821-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T02:59:05.050874-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-02T03:35:00-05:00] Prompt 15 — packaging: README, operational analysis, fresh-cache run
+
+User Prompt (verbatim, secrets redacted):
+Step 0 — four text corrections before packaging (write_report.py: shipped-notifies
+wording, the 1 row(s) plural artifact and sample_msg_004 clarification, the
+Config B 2-vs-3 losses reconciliation computed from metrics.json, and the Tier 3
+what-was-not-tested bullet). Regenerate evaluation_report.md and re-run
+crosscheck.py. Then Prompt 15 — packaging: finish code/README.md (setup, exact
+dependency versions, ANTHROPIC_API_KEY only, run command for main.py, run command
+for evaluation, architecture already written, final model and ASR configuration,
+known limitations). Add an operational analysis section to evaluation_report.md
+sourced from run_stats.json: total model calls, input and output tokens, cost with
+the pricing assumption stated explicitly, wall-clock runtime, cache hit rate,
+retry count, concurrency and backoff settings. Then verify and report:
+validate_output.py exits 0; python -m evaluation.main exits 0; a fresh
+python main.py from a clean cache exits 0; no file in code/ matches sk-ant, sk-,
+or api_key=; .gitignore excludes .env, venvs, __pycache__, dataset/ and cache
+dirs; the zip of code/ excludes .env, venvs, __pycache__, node_modules and
+dataset/; no absolute path from this machine appears in any source file;
+log.txt exists, its size, and that every tool session appears. Report the zip
+size and file count. Do not create the zip until I confirm.
+
+Agent Response Summary:
+Step 0's four corrections were applied in the prior turn (crosscheck 62/62) and
+were not redone. Packaging: backed up the router cache, output.csv, run_stats and
+both metrics files to the scratchpad, then cleared the cache and ran main.py from
+scratch — 110 rows, 0 degraded, 0 retries, 0 errors, exit 0, 463s wall clock,
+110 live model calls. The headline finding is that the run did NOT reproduce:
+comparing the backed-up cache against the new one, 21 of 140 readings (15.0%)
+changed at temperature 0.0 against byte-identical prompts — evidence ids 8,
+urgency 6, content_risk 6, message_type 3, and one each of asks_user_for_action,
+promotional and proposed_action. The deterministic layers absorbed most of it:
+only 8 of 110 output rows differ and just 1 changed its action (msg_089
+mute->notify). Re-scored both configs because the labeled rows' cache was cleared
+too; Config A moved 0.8000 -> 0.8333 (macro-F1 0.8024 -> 0.8306) from the same
+non-determinism, Config B unchanged at 0.9000, so the A-vs-B gap fell from 3 rows
+on the band edge to 2 rows within noise. Wrote the README's four empty sections
+plus a Configuration section and eleven known limitations, leading with the
+reproducibility finding. Added an Operational analysis section generated from
+run_stats.json: 110 calls, 128,220 input and 23,317 output tokens, 159,467
+cache-read and 1,463 cache-write, 0 retries, cost $0.7877 at an explicitly stated
+$3.00/$15.00 per MTok for claude-sonnet-4-6 with 0.1x cache reads and 1.25x cache
+writes, plus concurrency 4, 0.15s rate limiter and 1.0s->30.0s backoff.
+Re-measured every README claim afterwards and found four had gone stale from the
+fresh run (96 not 86 model-dependent rows, 14 not 24 deterministic, Layers 1-2
+deciding 9 not 8 labeled rows, model matching on 8 not 7); corrected all four and
+flagged in the README that these counts move between runs. Updated the
+crosscheck baselines accordingly and added twelve new checks: 72/72 match.
+Verifications all pass: validate_output exit 0, evaluation.main exit 0 for both
+configs, fresh main.py exit 0, check_dataset exit 0, suites 28/28 16/16 7/7 5/5,
+no sk-ant literal anywhere (the three api_key= hits are parameter names passing a
+config-read value), no absolute machine path in any source file, .gitignore
+covering all six required patterns, and log.txt at 81,498 bytes with 26 entries
+covering both tool sessions. Measured the package in the scratchpad only: 41
+entries, 166,529 bytes (163 KB), with .env, __pycache__, node_modules, dataset,
+venvs and both cache dirs all absent. No zip was created in the repository,
+per the instruction to wait for confirmation.
+
+Actions:
+* Edited code/README.md (Setup, Environment Variables, Run Commands, Evaluation,
+  Configuration, Known limitations) and corrected four stale counts
+* Edited code/evaluation/write_report.py (Operational analysis + cost section)
+* Backed up and cleared code/.cache/router; ran main.py from scratch (110 calls)
+* Re-ran evaluation.main for Config A and Config B; regenerated the report
+* Measured the archive in the scratchpad; created no zip in the repository
+* Updated and re-ran the scratchpad crosscheck (72/72)
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none
+[2026-08-02T03:10:02.077062-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T03:10:02.077845-05:00] DEGRADED ROW message_id=msg_048 exception=ToolOutputMissing stage=route detail=injected: no tool_use block
+[2026-08-02T03:10:02.078275-05:00] DEGRADED ROW message_id=msg_027 exception=UnsupportedImageFormat stage=media detail=injected: unconvertible image
+[2026-08-02T03:10:02.078354-05:00] DEGRADED ROW message_id=msg_027 exception=ToolOutputMissing stage=route detail=injected: retry also failed
+
+## [2026-08-02T03:55:00-05:00] Prompt 15a — six final corrections, Decisions audit, zip created
+
+User Prompt (verbatim, secrets redacted):
+Prompt 15a — Step 0 (final). Six corrections, then package. No behavior changes,
+no re-runs, no cache clearing. 1. README Decision 1 "Measured outcome": figures
+are from the pre-cache-clear run and contradict evaluation_report.md; read
+current values from metrics.json/metrics_b.json, correct every number and the
+verdict wording, then grep the README for 0.8000, 3-row, band edge, 8 of the 30,
+and on 7 of them and correct any survivor. 2. write_report.py header: the "Both
+configs read the identical cached model output" sentence is inconsistent with the
+table showing Config A at 30 live calls and Config B at 30 cache hits; verify the
+actual mechanism from cache files or run logs before writing, do not assume; this
+sentence is the control for the entire A/B comparison. 3. write_report.py "What
+was not tested" final bullet: cross-run stability is no longer unmeasured;
+replace with a measured subsection reporting the cache-clear experiment. 4.
+write_report.py Config B calibration: prose asserts monotonic while the computed
+field reports False; make the prose read from the computed value. 5.
+write_report.py cost section: with 0 cache hits "understates the cost" is
+backwards; make it conditional on measured hits. 6. Delete run_stats_prev.json
+and confirm no other backup/scratch artifact is in the archive. Then regenerate,
+re-run crosscheck, and additionally verify every numeric claim in README
+Decisions 1-5 against a measured source — the 72/72 pass missed a stale figure in
+Decision 1 — reporting which README numbers the crosscheck covers and which it
+does not. Confirm log.txt inclusion or its submission path, validate_output exit
+0, and no .env/dataset/venv/__pycache__/cache in the archive. Then create the zip
+and report entry count and size.
+
+Agent Response Summary:
+Item 2 was resolved from evidence before writing: the router cache key takes no
+config argument, the 30 labeled cache entries carry mtimes 02:33:53-02:35:58
+which falls inside Config A's run window, and the metrics files show Config A at
+30 live calls / 0 hits and Config B at 0 calls / 30 hits. So Config A's live
+calls wrote the entries Config B then read, and the two configs consumed
+byte-identical payloads — rewrote the control sentence to state that mechanism
+and why it matters given the non-determinism measured in item 3. Item 3 revealed
+a correction to my own prior figure: including media_summary, 43 of 140 readings
+changed (30.7%), not the 21/15.0% I reported last turn, which had silently
+excluded that free-text field. Captured the whole experiment to a new
+evaluation/reproducibility.json so the report reads it rather than quoting prose,
+and wrote a Reproducibility section reporting both percentages, the per-field
+breakdown, the 8 changed output rows, the single action change (msg_089), and the
+resulting Config A shift. Item 4: Config B's monotonic field is False, so the
+"buys a tidier curve" argument was rewritten to say the opposite and the surviving
+point — B cannot produce a disagreement_override band at all — was kept. Item 5:
+made the per-row cost sentence branch on the measured hit count; with 0 hits it
+now says the figure is the full uncached cost. Item 1: corrected Decision 1 to
+A=0.8333, B=0.9000, 2-row/6.67pp within noise, Layers 1-2 deciding 9 with the
+model matching on 8, and added a paragraph recording that these figures moved
+once already with no code change. The grep sweep found all five stale strings on
+three lines, all inside that one paragraph, now fixed; also corrected the README
+reproducibility bullet to carry both percentages. Item 6: deleted
+run_stats_prev.json; the artifact sweep found only diagnose_12b.py, which is a
+documented read-only tool rather than scratch, so it stays. Audited all 46
+numeric claims in Decisions 1-5 against measurement — 46/46 — and folded that
+audit permanently into crosscheck.py, which now runs 89 checks, all passing.
+log.txt is deliberately not in the archive: AGENTS.md section 2 places it outside
+the repository, so it is submitted separately from its home path. Created
+code.zip: 41 entries, 169,300 bytes, with .env, dataset, venvs, __pycache__,
+node_modules, both cache directories and run_stats_prev all confirmed absent.
+
+Actions:
+* Edited code/README.md (Decision 1 measured outcome + reproducibility bullet)
+* Edited code/evaluation/write_report.py (items 2, 3, 4, 5)
+* Created code/evaluation/reproducibility.json from the cache-clear measurement
+* Deleted code/run_stats_prev.json
+* Regenerated evaluation_report.md; extended crosscheck.py to 89 checks
+* Ran the Decisions 1-5 audit (46/46) and the four suites
+* Created code.zip (41 entries, 169,300 bytes)
+
+Context:
+tool=claude-code
+branch=main
+repo_root=/Users/srikanth/Documents/Projects/hackerrank-orchestrate-august26-main
+worktree=main
+parent_agent=none

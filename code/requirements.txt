@@ -1,0 +1,13 @@
+# Pinned exactly so runs are reproducible across machines.
+# Install with: pip install -r code/requirements.txt
+
+anthropic==0.120.2
+pandas==2.3.2
+
+# Image downscaling before base64 encoding. Without it vision.py falls back to
+# sending originals, which costs tokens but does not break the run.
+Pillow==11.3.0
+
+# ASR for the 13 voice notes. Only needed to REGENERATE
+# code/cache/transcripts.json; the committed cache means main.py runs without it.
+faster-whisper==1.2.1
